@@ -4,14 +4,11 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 
-
-
-
 [RequireComponent(typeof(GridManager))]
 public class RoomManager : MonoBehaviour
 {
     [SerializeField] SpawnPositions startingPosition;
-    [SerializeField] private int roomsAmount = 20;
+    [SerializeField] private int roomsAmount = 30;
     [Range(0,1)]
     [SerializeField] private float probabilityOfSuccess = 0.5f;
 

@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    [Range(0, 1)]
-    [SerializeField] private float connectionDepth = 0.25f;
-
-    //glielo deve passare la griglia
-    [SerializeField]
-    private Vector2 scale = new(20, 10);
     public Vector2Int RoomIndex { get; set; }
+    [SerializeField] private GameObject floorPF;
+    [Range(0,1)] [SerializeField] private float wallThickness = 1.0f;
+
+    private RoomBlueprint roomBP;
     private ConnectionsHandler dc;
 
     private void Awake()
     {
         dc = GetComponent<ConnectionsHandler>();
-        dc.InitializeConnections(scale, connectionDepth);
+        roomBP = new(GridManager.Instance.GetSize(), wallThickness);
+        dc.InitializeConnections(roomBP);
+    }
+    private void Start()
+    {
+        GameObject floor = Instantiate(floorPF, transform);
+        floor.transform.localScale = roomBP.Scale;
+        dc.InstantiateConnections();
     }
 
     public void PositionConnections()
