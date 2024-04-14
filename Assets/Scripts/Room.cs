@@ -14,7 +14,7 @@ public class Room : MonoBehaviour
     private void Awake()
     {
         dc = GetComponent<ConnectionsHandler>();
-        roomBP = new(GridManager.Instance.GetSize(), wallThickness);
+        roomBP = new(GameManager.Instance.GridManager.GetSize(), wallThickness);
         dc.InitializeConnections(roomBP);
     }
     private void Start()

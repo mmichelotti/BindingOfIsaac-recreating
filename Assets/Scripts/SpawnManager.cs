@@ -4,27 +4,25 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(GridManager))]
-public class RoomManager : MonoBehaviour
+public class SpawnManager : MonoBehaviour
 {
+    
     [SerializeField] SpawnPositions startingPosition;
     [SerializeField] private int roomsAmount = 30;
     [Range(0,1)]
     [SerializeField] private float probabilityOfSuccess = 0.5f;
 
-    private Queue<Vector2Int> roomsQ = new();
+    private readonly Queue<Vector2Int> roomsQ = new();
     private GridManager GridManager;
     private uint roomCount;
     private bool generationComplete;
     private Vector2Int firstRoom;
-    
+
+    public int RoomsAmount { get { return roomsAmount; } }
+
     private void Awake()
     {
-        GridManager = GetComponent<GridManager>();
-    }
-    private void Start()
-    {
-        RoomEvents.RaiseRoomCountDetermined(roomsAmount);
+        GridManager = GameManager.Instance.GridManager;
     }
 
     private void Update()

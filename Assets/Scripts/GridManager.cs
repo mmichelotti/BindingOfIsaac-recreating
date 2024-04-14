@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(RoomFactory))]
 public class GridManager : MonoBehaviour
 {
-    private static GridManager _instance;
-    public static GridManager Instance { get { return _instance; } }
-
     private const int LENGTH = 11;
     [SerializeField] private Vector2 size = new(20, 10);
     [Range(0, 1)]
@@ -21,7 +18,8 @@ public class GridManager : MonoBehaviour
     {
         if (!roomsAtPosition.ContainsKey(pos))
         {
-            Room room = rf.SetRoomAt(pos, GetWSPositionAt(pos));
+            Room room = rf.ActivateRoom(GetWSPositionAt(pos));
+            room.RoomIndex = pos;
             roomsAtPosition.Add(pos, room);
             return true;
         }
@@ -92,20 +90,13 @@ public class GridManager : MonoBehaviour
     #region Private
     private void Awake()
     {
-        #region Singleton (che schifo)
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        #endregion
         rf = GetComponent<RoomFactory>();
     }
-    private Vector3 GetWSPositionAt(Vector2Int gridIndex) => new (GetHalfPoint(size.x, gridIndex.x), GetHalfPoint(size.y, gridIndex.y));
+    private void Start()
+    {
+        rf.PrepareRoomsPooling();
+    }
+    public Vector3 GetWSPositionAt(Vector2Int gridIndex) => new (GetHalfPoint(size.x, gridIndex.x), GetHalfPoint(size.y, gridIndex.y));
     private static float GetHalfPoint(float roomDimension, int gridIndex) => roomDimension * (gridIndex - LENGTH / 2);
     private int CountNeighbours(Vector2Int pos)
     {

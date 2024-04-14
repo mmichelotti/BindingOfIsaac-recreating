@@ -50,4 +50,10 @@ public static class DirectionUtility
         { SpawnPositions.Left,  new(0, .5f)}
     };
     public static Direction GetOppositeDirection(Direction dir) => (Direction)(((int)dir + 2) % 4);
+
+    public static Vector3 ConvertCoordinateToPos(Vector2Int pos)
+    {
+
+        return Vector3.zero;
+    }
 }
