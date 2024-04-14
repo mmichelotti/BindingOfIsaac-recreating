@@ -24,7 +24,6 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         GridManager = GameManager.Instance.GridManager;
-
     }
 
     private void Update()

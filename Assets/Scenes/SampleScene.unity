@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingPosition: 0
-  roomsAmount: 35
-  probabilityOfSuccess: 0.5
+  roomsAmount: 10
+  probabilityOfSuccess: 0.65
 --- !u!1 &1536435638
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f81f71c8fb4d904f8b586e0f222a790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 20, y: 10}
+  length: 11
+  size: {x: 10, y: 10}
   chanceForDoor: 0.8
 --- !u!114 &1536435641
 MonoBehaviour:
