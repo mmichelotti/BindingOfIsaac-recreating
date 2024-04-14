@@ -20,13 +20,16 @@ public class SpawnManager : MonoBehaviour
 
     public int RoomsAmount { get { return roomsAmount; } }
 
-    private void Awake()
+
+    private void Start()
     {
         GridManager = GameManager.Instance.GridManager;
+
     }
 
     private void Update()
     {
+
         if (roomsQ.Count > 0 && roomCount < roomsAmount && !generationComplete)
         {
             Vector2Int pos = roomsQ.Dequeue();
@@ -40,7 +43,9 @@ public class SpawnManager : MonoBehaviour
         {
             generationComplete = true;
             GridManager.OpenDoors();
+            enabled = false;
         }
+
     }
     private void GenerateRooms()
     {

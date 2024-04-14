@@ -5,7 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(RoomFactory))]
 public class GridManager : MonoBehaviour
 {
-    private const int LENGTH = 11;
+    [SerializeField]
+    private int length = 11;
     [SerializeField] private Vector2 size = new(20, 10);
     [Range(0, 1)]
     [SerializeField] private float chanceForDoor = 0.8f;
@@ -19,7 +20,7 @@ public class GridManager : MonoBehaviour
         if (!roomsAtPosition.ContainsKey(pos))
         {
             Room room = rf.ActivateRoom(GetWSPositionAt(pos));
-            room.RoomIndex = pos;
+            room.RoomCoordinate = pos;
             roomsAtPosition.Add(pos, room);
             return true;
         }
@@ -60,6 +61,7 @@ public class GridManager : MonoBehaviour
             {
                 roomsAtPosition[pos].PositionConnections();
                 Direction oppositeDirection = DirectionUtility.GetOppositeDirection(dir.Key);
+
                 if (Random.value < chanceForDoor)
                 {
                     roomsAtPosition[pos].OpenConnections(dir.Key);
@@ -77,11 +79,11 @@ public class GridManager : MonoBehaviour
 
     public Vector2Int GetSpawnPosition(SpawnPositions pos)
     {
-        Vector2 vector = DirectionUtility.PositionToCoordinate[pos] * (LENGTH - 1);
+        Vector2 vector = DirectionUtility.PositionToCoordinate[pos] * (length - 1);
         return new((int)vector.x, (int)vector.y);
     }
     public bool HasLessThenXNeighbours(Vector2Int pos, int amount) => CountNeighbours(pos) < amount;
-    public bool IsWithinGrid(Vector2Int position) => position.x >= 0 && position.y >= 0 && position.x < LENGTH && position.y < LENGTH;
+    public bool IsWithinGrid(Vector2Int position) => position.x >= 0 && position.y >= 0 && position.x < length && position.y < length;
 
     public Vector2 GetSize() => size;
     #endregion
@@ -97,7 +99,7 @@ public class GridManager : MonoBehaviour
         rf.PrepareRoomsPooling();
     }
     public Vector3 GetWSPositionAt(Vector2Int gridIndex) => new (GetHalfPoint(size.x, gridIndex.x), GetHalfPoint(size.y, gridIndex.y));
-    private static float GetHalfPoint(float roomDimension, int gridIndex) => roomDimension * (gridIndex - LENGTH / 2);
+    private float GetHalfPoint(float roomDimension, int gridIndex) => roomDimension * (gridIndex - length / 2);
     private int CountNeighbours(Vector2Int pos)
     {
         int neighbours = 0;
@@ -110,9 +112,9 @@ public class GridManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        for (int x = 0; x < LENGTH; x++)
+        for (int x = 0; x < length; x++)
         {
-            for (int y = 0; y < LENGTH; y++)
+            for (int y = 0; y < length; y++)
             {
                 Vector3 pos = GetWSPositionAt(new Vector2Int(x, y));
                 Gizmos.DrawWireCube(pos, new Vector3(size.x, size.y, 1));

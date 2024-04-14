@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public Vector2Int RoomIndex { get; set; }
+    public Vector2Int RoomCoordinate { get; set; }
     [SerializeField] private GameObject floorPF;
     [Range(0,1)] [SerializeField] private float wallThickness = 1.0f;
 

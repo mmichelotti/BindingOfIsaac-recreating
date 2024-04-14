@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-
 public enum Direction
 {
     Up,
@@ -20,7 +19,6 @@ public enum SpawnPositions
     DownLeft,
     Left
 }
-
 public static class DirectionUtility
 {
     public static readonly Dictionary<Direction, Vector2Int> DirectionToVector = new()
@@ -53,7 +51,6 @@ public static class DirectionUtility
 
     public static Vector3 ConvertCoordinateToPos(Vector2Int pos)
     {
-
         return Vector3.zero;
     }
 }

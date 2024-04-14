@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class Connection
 {
-    //si lo so che è praticamente una classe game object hahaha mi ha fatto ridere
-    //è solo che ha un costruttore diverso e mi faceva comodo per tenere il codice ordinato
-    //ok più passa il tempo più mi fa ridere non la cancellerò
+    //si lo so che Ã¨ praticamente una classe game object hahaha mi ha fatto ridere 
+    //Ã¨ solo che ha un costruttore diverso e mi faceva comodo per tenere il codice ordinato
+    //ok piÃ¹ passa il tempo piÃ¹ mi fa ridere non la canceller
     public GameObject GameObject { get; private set; }
     public Connection(GameObject prefab, Transform parent)
     {
@@ -14,7 +13,6 @@ public class Connection
     }
     public void Initialize(string name, Vector3 position, Quaternion rotation)
     {
-
         GameObject.name = name;
         GameObject.transform.SetPositionAndRotation(position, rotation);
     }

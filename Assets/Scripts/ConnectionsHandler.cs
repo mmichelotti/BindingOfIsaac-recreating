@@ -24,7 +24,8 @@ public class ConnectionsHandler : MonoBehaviour
             Connection wall = new (wallPrefab, walls.transform);
 
             float wallLength = (((int)dir) % 2 == 0) ? RoomBlueprint.Scale.x : RoomBlueprint.Scale.y;
-            float doorLenght = (Mathf.Min(RoomBlueprint.Scale.x, RoomBlueprint.Scale.y)) * doorSize;
+            float doorLenght = Mathf.Min(RoomBlueprint.Scale.x, RoomBlueprint.Scale.y) * doorSize;
+
             wall.GameObject.transform.localScale = new Vector3(wallLength, RoomBlueprint.EdgeThickness);
             door.GameObject.transform.localScale = new Vector3(doorLenght, RoomBlueprint.EdgeThickness);
 
@@ -33,6 +34,7 @@ public class ConnectionsHandler : MonoBehaviour
             OpenWall(dir);
         }
     }
+
     public void PositionConnections()
     {
         Vector2 spacing = new(RoomBlueprint.CenterOffset.x - RoomBlueprint.EdgeOffset, RoomBlueprint.CenterOffset.y - RoomBlueprint.EdgeOffset);
