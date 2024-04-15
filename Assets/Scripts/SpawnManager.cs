@@ -51,7 +51,7 @@ public class SpawnManager : MonoBehaviour
         roomsQ.Clear();
         roomCount = 0;
         generationComplete = false;
-        firstRoom = GridManager.GetSpawnPosition(startingPosition);
+        firstRoom = GridManager.Grid.GetSpawnPosition(startingPosition);
         StartGenerationAt(firstRoom);
     }
 
@@ -68,7 +68,7 @@ public class SpawnManager : MonoBehaviour
     }
     private bool ShouldGenerateRoom(Vector2Int pos)
     {
-        if (!GridManager.IsWithinGrid(pos) || !GridManager.HasLessThenXNeighbours(pos,2)) return false;
+        if (!GridManager.Grid.IsWithinGrid(pos) || !GridManager.HasLessThenXNeighbours(pos,2)) return false;
         if (roomCount >= roomsAmount) return false;
         if (Probability(probabilityOfSuccess) && pos != firstRoom) return false; //exept the first room gets a chance
         return true;

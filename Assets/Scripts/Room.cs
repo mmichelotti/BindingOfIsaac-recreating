@@ -14,7 +14,7 @@ public class Room : MonoBehaviour
     private void Awake()
     {
         dc = GetComponent<ConnectionsHandler>();
-        normalRoom = new(GameManager.Instance.GridManager.GetSize(), wallThickness);
+        normalRoom = new(GameManager.Instance.GridManager.Grid.Size, wallThickness);
     }
     private void Start()
     {
