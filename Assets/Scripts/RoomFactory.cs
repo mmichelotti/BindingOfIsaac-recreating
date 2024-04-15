@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class RoomFactory : MonoBehaviour
 {
-    [SerializeField] private GameObject roomPrefab;
+    [SerializeField] private Room roomPF;
     private readonly List<Room> roomPool = new();
     private int currentIndex = 0;
 
@@ -13,7 +13,7 @@ public class RoomFactory : MonoBehaviour
         int roomsCount = GameManager.Instance.SpawnManager.RoomsAmount;
         for (int i = 0; i < roomsCount; i++)
         {
-            Room newRoom = Instantiate(roomPrefab, parent.transform).GetComponent<Room>();
+            Room newRoom = Instantiate(roomPF, parent.transform);
             roomPool.Add(newRoom);
             Deactivate(newRoom);
         }

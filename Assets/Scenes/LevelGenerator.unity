@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingPosition: 0
-  roomsAmount: 10
+  roomsAmount: 45
   probabilityOfSuccess: 0.65
 --- !u!1 &1536435638
 GameObject:
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 11
   size: {x: 20, y: 10}
-  chanceForDoor: 0.8
+  chanceForDoor: 1
 --- !u!114 &1536435641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe2992c1d0a38f0458528ae5a81ce0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPrefab: {fileID: 6036398102019197968, guid: 4aa4704f8c7567841bdf028af91df817, type: 3}
+  roomPF: {fileID: -1189685365482447730, guid: 4aa4704f8c7567841bdf028af91df817, type: 3}
 --- !u!1 &1651769775
 GameObject:
   m_ObjectHideFlags: 0
