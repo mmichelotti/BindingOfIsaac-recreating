@@ -217,7 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   length: 11
   size: {x: 20, y: 10}
-  chanceForDoor: 1
+  chanceForDoor: 0.454
 --- !u!114 &1536435641
 MonoBehaviour:
   m_ObjectHideFlags: 0

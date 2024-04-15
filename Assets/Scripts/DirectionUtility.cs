@@ -7,7 +7,7 @@ public enum Direction
     Down,
     Left
 }
-public enum SpawnPositions
+public enum SpawnPosition
 {
     Center,
     UpLeft,
@@ -35,22 +35,17 @@ public static class DirectionUtility
         { Direction.Down, Quaternion.Euler(0, 0, 180) },
         { Direction.Left, Quaternion.Euler(0, 0, 270) }
     };
-    public static readonly Dictionary<SpawnPositions, Vector2> PositionToCoordinate = new()
+    public static readonly Dictionary<SpawnPosition, Vector2> PositionToCoordinate = new()
     {
-        { SpawnPositions.Center, new(.5f, .5f) },
-        { SpawnPositions.UpLeft, new(0, 1) },
-        { SpawnPositions.Up,  new(.5f, 1)},
-        { SpawnPositions.UpRight, new(1, 1) },
-        { SpawnPositions.Right, new(1, .5f) },
-        { SpawnPositions.DownRight, new(1, 0) },
-        { SpawnPositions.Down,  new(.5f, 0)},
-        { SpawnPositions.DownLeft, new(0, 0) },
-        { SpawnPositions.Left,  new(0, .5f)}
+        { SpawnPosition.Center, new(.5f, .5f) },
+        { SpawnPosition.UpLeft, new(0, 1) },
+        { SpawnPosition.Up,  new(.5f, 1)},
+        { SpawnPosition.UpRight, new(1, 1) },
+        { SpawnPosition.Right, new(1, .5f) },
+        { SpawnPosition.DownRight, new(1, 0) },
+        { SpawnPosition.Down,  new(.5f, 0)},
+        { SpawnPosition.DownLeft, new(0, 0) },
+        { SpawnPosition.Left,  new(0, .5f)}
     };
     public static Direction GetOppositeDirection(Direction dir) => (Direction)(((int)dir + 2) % 4);
-
-    public static Vector3 ConvertCoordinateToPos(Vector2Int pos)
-    {
-        return Vector3.zero;
-    }
 }

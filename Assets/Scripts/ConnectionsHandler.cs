@@ -9,6 +9,7 @@ public class ConnectionsHandler : MonoBehaviour
     [SerializeField] private GameObject wallPrefab;
     [SerializeField] [Range(0, 1)] private float doorSize = 0.25f;
     private readonly Dictionary<Direction, (Connection door, Connection wall)> directionToConnections = new();
+
     private RoomBlueprint RoomBlueprint { get; set; }
 
     #region Public
@@ -38,11 +39,8 @@ public class ConnectionsHandler : MonoBehaviour
     public void PositionConnections()
     {
         Vector2 spacing = new(RoomBlueprint.CenterOffset.x - RoomBlueprint.EdgeOffset, RoomBlueprint.CenterOffset.y - RoomBlueprint.EdgeOffset);
-        foreach (var entry in directionToConnections)
+        foreach (var (dir,(door,wall)) in directionToConnections)
         {
-            Direction dir = entry.Key;
-            var (door, wall) = entry.Value;
-
             door.Initialize($"{dir}_Door", GetPositionAt(dir, spacing), GetRotationAt(dir));
             wall.Initialize($"{dir}_Wall", GetPositionAt(dir, spacing), GetRotationAt(dir));
         }

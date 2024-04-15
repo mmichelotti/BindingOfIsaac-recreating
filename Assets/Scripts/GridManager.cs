@@ -54,6 +54,7 @@ public class GridManager : MonoBehaviour
 
     public void OpenDoorsAt(Vector2Int pos)
     {
+
         foreach (var dir in DirectionUtility.DirectionToVector)
         {
             Vector2Int newPos = pos + dir.Value;
@@ -77,7 +78,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public Vector2Int GetSpawnPosition(SpawnPositions pos)
+    public Vector2Int GetSpawnPosition(SpawnPosition pos)
     {
         Vector2 vector = DirectionUtility.PositionToCoordinate[pos] * (length - 1);
         return new((int)vector.x, (int)vector.y);

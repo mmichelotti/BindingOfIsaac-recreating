@@ -6,8 +6,7 @@ using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
-    
-    [SerializeField] SpawnPositions startingPosition;
+    [SerializeField] SpawnPosition startingPosition;
     [SerializeField] private int roomsAmount = 30;
     [Range(0,1)]
     [SerializeField] private float probabilityOfSuccess = 0.5f;
