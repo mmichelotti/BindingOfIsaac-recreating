@@ -27,19 +27,12 @@ public class RoomFactory : MonoBehaviour
         return room;
     }
 
-    public void Activate(Room room)
-    {
-        room.gameObject.SetActive(true);
-    }
-    public void Deactivate(Room room)
-    {
-        room.gameObject.SetActive(false);
-    }
-
     private Room GetPooledRoom()
     {
         Room room = roomPool[currentIndex];
         currentIndex = (currentIndex + 1) % roomPool.Count; // Wrap index if it goes beyond the pool size
         return room;
     }
+    public void Activate(Room room) => room.gameObject.SetActive(true);
+    public void Deactivate(Room room) => room.gameObject.SetActive(false);
 }

@@ -8,25 +8,24 @@ public class Room : MonoBehaviour
     [SerializeField] private GameObject floorPF;
     [Range(0,1)] [SerializeField] private float wallThickness = 1.0f;
 
-    private RoomBlueprint roomBP;
+    private RoomBlueprint normalRoom;
     private ConnectionsHandler dc;
 
     private void Awake()
     {
         dc = GetComponent<ConnectionsHandler>();
-        roomBP = new(GameManager.Instance.GridManager.GetSize(), wallThickness);
-        dc.InitializeConnections(roomBP);
+        normalRoom = new(GameManager.Instance.GridManager.GetSize(), wallThickness);
     }
     private void Start()
     {
         GameObject floor = Instantiate(floorPF, transform);
-        floor.transform.localScale = roomBP.Scale;
+        floor.transform.localScale = normalRoom.Scale;
         dc.InstantiateConnections();
     }
 
     public void PositionConnections()
     {
-        dc.PositionConnections();
+        dc.SetConnections(normalRoom);
     }
     public void OpenConnections(Direction dir)
     {

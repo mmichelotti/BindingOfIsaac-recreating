@@ -7,6 +7,7 @@ public struct RoomBlueprint
     [HideInInspector] public Vector2 CenterOffset;
     [Range(0, 1)] public float EdgeThickness;
     [HideInInspector] public float EdgeOffset;
+    [HideInInspector] public Vector2 Spacing;
 
     public RoomBlueprint(Vector2 scale, float edgeThickness)
     {
@@ -16,6 +17,7 @@ public struct RoomBlueprint
         edgeThickness *= min;
         EdgeThickness = edgeThickness;
         EdgeOffset = edgeThickness / 2;
+        Spacing = new((CenterOffset.x - EdgeOffset),((CenterOffset.y - EdgeOffset)));
     }
 
 }
