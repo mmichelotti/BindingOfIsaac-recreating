@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(RoomFactory))]
+[RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
     [SerializeField] private float chanceForDoor = 0.8f;
     public Grid Grid;
-    
-    private RoomFactory rf;
-    private readonly Dictionary<Vector2Int, Room> roomsAtPosition = new();
+    private TileFactory rf;
+    private readonly Dictionary<Vector2Int, Tile> roomsAtPosition = new();
     private void Awake()
     {
-        rf = GetComponent<RoomFactory>();
+        rf = GetComponent<TileFactory>();
     }
     private void Start()
     {
@@ -24,7 +23,7 @@ public class GridManager : MonoBehaviour
     {
         if (!roomsAtPosition.ContainsKey(pos))
         {
-            Room room = rf.ActivateRoom(Grid.GetWSPositionAt(pos));
+            Tile room = rf.ActivateRoom(Grid.CoordinateToPosition(pos));
             room.RoomCoordinate = pos;
             roomsAtPosition.Add(pos, room);
             return true;
@@ -63,7 +62,7 @@ public class GridManager : MonoBehaviour
         foreach (var dir in DirectionUtility.DirectionToVector)
         {
             Vector2Int newPos = pos + dir.Value;
-            if (roomsAtPosition.TryGetValue(newPos, out Room adjacentRoom))
+            if (roomsAtPosition.TryGetValue(newPos, out Tile adjacentRoom))
             {
                 roomsAtPosition[pos].PositionConnections();
                 Direction oppositeDirection = DirectionUtility.GetOppositeDirection(dir.Key);

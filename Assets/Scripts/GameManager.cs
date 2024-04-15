@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager _instance;
-    public static GameManager Instance { get { return _instance; } }
+    private static GameManager instance;
+    public static GameManager Instance => instance;
     public SpawnManager SpawnManager { get; private set; }
     public GridManager GridManager { get; private set; }
 
@@ -19,13 +19,13 @@ public class GameManager : MonoBehaviour
 
     private void MakeSingleton()
     {
-        if (_instance != null && _instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
         }
         else
         {
-            _instance = this;
+            instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
     }

@@ -7,18 +7,15 @@ using Random = UnityEngine.Random;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] SpawnPosition startingPosition;
-    [SerializeField] private int roomsAmount = 30;
+    [field: SerializeField] public int RoomsAmount { get; set; } = 30;
     [Range(0,1)]
-    [SerializeField] private float probabilityOfSuccess = 0.5f;
+    [SerializeField] private float probabilityOfSuccess = 0.65f;
 
     private readonly Queue<Vector2Int> roomsQ = new();
     private GridManager GridManager;
     private uint roomCount;
     private bool generationComplete;
     private Vector2Int firstRoom;
-
-    public int RoomsAmount { get { return roomsAmount; } }
-
 
     private void Start()
     {
@@ -27,13 +24,12 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
-
-        if (roomsQ.Count > 0 && roomCount < roomsAmount && !generationComplete)
+        if (roomsQ.Count > 0 && roomCount < RoomsAmount && !generationComplete)
         {
             Vector2Int pos = roomsQ.Dequeue();
             foreach (Vector2Int dir in DirectionUtility.DirectionToVector.Values) TryGenerateRoomAt(pos + dir);
         }
-        else if (roomCount < roomsAmount)
+        else if (roomCount < RoomsAmount)
         {
             GenerateRooms();
         }
@@ -51,7 +47,7 @@ public class SpawnManager : MonoBehaviour
         roomsQ.Clear();
         roomCount = 0;
         generationComplete = false;
-        firstRoom = GridManager.Grid.GetSpawnPosition(startingPosition);
+        firstRoom = GridManager.Grid.GetCoordinatesAt(startingPosition);
         StartGenerationAt(firstRoom);
     }
 
@@ -69,7 +65,7 @@ public class SpawnManager : MonoBehaviour
     private bool ShouldGenerateRoom(Vector2Int pos)
     {
         if (!GridManager.Grid.IsWithinGrid(pos) || !GridManager.HasLessThenXNeighbours(pos,2)) return false;
-        if (roomCount >= roomsAmount) return false;
+        if (roomCount >= RoomsAmount) return false;
         if (Probability(probabilityOfSuccess) && pos != firstRoom) return false; //exept the first room gets a chance
         return true;
     }

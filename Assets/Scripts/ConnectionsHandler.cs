@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
-
 public class ConnectionsHandler : MonoBehaviour
 {
     [SerializeField] private GameObject doorPrefab;
@@ -51,8 +49,6 @@ public class ConnectionsHandler : MonoBehaviour
     public void CloseDoor(Direction dir) => directionToConnections[dir].door.SetActive(false);
     public void CloseWall(Direction dir) => directionToConnections[dir].wall.SetActive(false);
 
-
-
     private static GameObject InitEmptyGO(string name, Transform transform)
     {
         GameObject go = new(name);
@@ -65,9 +61,7 @@ public class ConnectionsHandler : MonoBehaviour
         Vector2 offset = DirectionUtility.DirectionToVector[dir] * spacing;
         return new Vector3(offset.x, offset.y, 0) + transform.position;
     }
-
     private static Quaternion GetRotationAt(Direction dir) => DirectionUtility.DirectionToOrientation[dir];
-
 }
 
 

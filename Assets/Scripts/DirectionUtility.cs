@@ -47,5 +47,19 @@ public static class DirectionUtility
         { SpawnPosition.DownLeft, new(0, 0) },
         { SpawnPosition.Left,  new(0, .5f)}
     };
+    public static Direction GetOppositeDirection(Direction dir)
+    {
+        return dir switch
+        {
+            Direction.Up => Direction.Down,
+            Direction.Right => Direction.Left,
+            Direction.Down => Direction.Up,
+            Direction.Left => Direction.Right,
+            _ => throw new System.NotImplementedException(),
+        };
+    }
+
+    /* //deprecated
     public static Direction GetOppositeDirection(Direction dir) => (Direction)(((int)dir + 2) % 4);
+    */
 }
