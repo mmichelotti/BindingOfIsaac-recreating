@@ -1,11 +1,14 @@
 // RoomFactory.cs
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+
 public class TileFactory : MonoBehaviour
 {
-    [SerializeField] private Tile roomPF;
+    [SerializeField]
+    private Tile roomPF;
     private readonly List<Tile> roomPool = new();
     private int currentIndex = 0;
+
     public void PrepareRoomsPooling()
     {
         GameObject parent = new("Rooms");
@@ -17,6 +20,7 @@ public class TileFactory : MonoBehaviour
             Deactivate(newRoom);
         }
     }
+
     public Tile ActivateRoom(Vector3 wsPos, string name = "")
     {
         Tile room = GetPooledRoom();
@@ -32,6 +36,8 @@ public class TileFactory : MonoBehaviour
         currentIndex = (currentIndex + 1) % roomPool.Count; // Wrap index if it goes beyond the pool size
         return room;
     }
+
     public void Activate(Tile room) => room.gameObject.SetActive(true);
+
     public void Deactivate(Tile room) => room.gameObject.SetActive(false);
 }
