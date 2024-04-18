@@ -1,12 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
     public Vector2Int RoomCoordinate { get; set; }
-    [SerializeField] private GameObject floorPF;
-    [Range(0,1)] [SerializeField] private float wallThickness = 1.0f;
+
+    [SerializeField]
+    private GameObject floorPF;
+
+    [Range(0, 1)]
+    [SerializeField]
+    private float wallThickness = 1.0f;
 
     private RoomBlueprint normalRoom;
     private ConnectionsHandler dc;
@@ -16,6 +19,7 @@ public class Tile : MonoBehaviour
         dc = GetComponent<ConnectionsHandler>();
         normalRoom = new(GameManager.Instance.GridManager.Grid.Size, wallThickness);
     }
+
     private void Start()
     {
         GameObject floor = Instantiate(floorPF, transform);
@@ -27,6 +31,7 @@ public class Tile : MonoBehaviour
     {
         dc.SetConnections(normalRoom);
     }
+
     public void OpenConnections(Direction dir)
     {
         dc.OpenDoor(dir);
@@ -38,5 +43,4 @@ public class Tile : MonoBehaviour
         dc.CloseDoor(dir);
         dc.CloseWall(dir);
     }
-
 }

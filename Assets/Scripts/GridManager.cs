@@ -1,23 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private float chanceForDoor = 0.8f;
-    public Grid Grid;
+    public Grid Grid
+    {
+        get => grid;
+        set => grid = value;
+    }
+
+    [SerializeField]
+    private Grid grid;
+
+    [SerializeField]
+    private float chanceForDoor = 0.8f;
+
     private TileFactory rf;
+
     private readonly Dictionary<Vector2Int, Tile> roomsAtPosition = new();
+
     private void Awake()
     {
         rf = GetComponent<TileFactory>();
     }
+
     private void Start()
     {
         rf.PrepareRoomsPooling();
     }
-
 
     public bool RegisterRoomAt(Vector2Int pos)
     {
@@ -28,6 +40,7 @@ public class GridManager : MonoBehaviour
             roomsAtPosition.Add(pos, room);
             return true;
         }
+
         return false;
     }
 
@@ -39,12 +52,15 @@ public class GridManager : MonoBehaviour
             roomsAtPosition.Remove(pos);
             return true;
         }
+
         return false;
     }
 
     public void ClearRooms()
     {
-        foreach (var room in roomsAtPosition.Values) rf.Deactivate(room);
+        foreach (var room in roomsAtPosition.Values)
+            rf.Deactivate(room);
+
         roomsAtPosition.Clear();
     }
 
@@ -58,7 +74,6 @@ public class GridManager : MonoBehaviour
 
     public void OpenDoorsAt(Vector2Int pos)
     {
-
         foreach (var dir in DirectionUtility.DirectionToVector)
         {
             Vector2Int newPos = pos + dir.Value;
@@ -77,19 +92,16 @@ public class GridManager : MonoBehaviour
                     roomsAtPosition[pos].CloseConnections(dir.Key);
                     adjacentRoom.CloseConnections(oppositeDirection);
                 }
-                
             }
         }
     }
 
-    public bool HasLessThenXNeighbours(Vector2Int pos, int amount) => CountNeighbours(pos) < amount;
-    private int CountNeighbours(Vector2Int pos)
-    {
-        int neighbours = 0;
-        foreach (Vector2Int dir in DirectionUtility.DirectionToVector.Values)
-        {
-            if (roomsAtPosition.ContainsKey(pos + dir)) neighbours++;
-        }
-        return neighbours;
-    }
+    public bool HasLessThenXNeighbors(Vector2Int pos, int amount) => CountNeighbors(pos) < amount;
+
+    private int CountNeighbors(Vector2Int pos) =>
+        (
+            from Vector2Int dir in DirectionUtility.DirectionToVector.Values
+            where roomsAtPosition.ContainsKey(pos + dir)
+            select dir
+        ).Count();
 }
