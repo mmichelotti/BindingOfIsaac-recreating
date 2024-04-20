@@ -13,36 +13,33 @@ public class ConnectionsHandler : MonoBehaviour
     [Range(0, 1)]
     private float doorSize = 0.25f;
 
-    private readonly Dictionary<
-        Direction,
-        (GameObject door, GameObject wall)
-    > directionToConnections = new();
+    private readonly Dictionary<Direction,(GameObject door, GameObject wall)> directionToConnections = new();
 
     public void InstantiateConnections()
     {
-        var doors = InitEmptyGO("Doors", transform);
-        var walls = InitEmptyGO("Walls", transform);
+        GameObject doors = InitEmptyGO("Doors", transform);
+        GameObject walls = InitEmptyGO("Walls", transform);
 
         foreach (Direction dir in System.Enum.GetValues(typeof(Direction)))
         {
-            var door = Instantiate(doorPrefab, doors.transform);
-            var wall = Instantiate(wallPrefab, walls.transform);
+            GameObject door = Instantiate(doorPrefab, doors.transform);
+            GameObject wall = Instantiate(wallPrefab, walls.transform);
             directionToConnections[dir] = (door, wall);
             CloseDoor(dir);
             OpenWall(dir);
         }
     }
 
-    public void SetConnections(RoomBlueprint rBP)
+    public void SetConnectionsTransform(RoomBlueprint rBP)
     {
         float doorLength = Mathf.Min(rBP.Scale.x, rBP.Scale.y) * doorSize;
         foreach (var (dir, (door, wall)) in directionToConnections)
         {
             float wallLength = ((int)dir % 2 == 0) ? rBP.Scale.x : rBP.Scale.y;
-            var wallScale = new Vector3(wallLength, rBP.EdgeThickness);
-            var doorScale = new Vector3(doorLength, rBP.EdgeThickness);
-            var position = CalculateOffset(dir, rBP.Spacing);
-            var rotation = GetRotationAt(dir);
+            Vector3 wallScale = new(wallLength, rBP.EdgeThickness);
+            Vector3 doorScale = new(doorLength, rBP.EdgeThickness);
+            Vector3 position = CalculateOffset(dir, rBP.Spacing);
+            Quaternion rotation = GetRotationAt(dir);
 
             wall.transform.localScale = wallScale;
             wall.name = $"{dir}_Wall";
@@ -75,6 +72,5 @@ public class ConnectionsHandler : MonoBehaviour
         return new Vector3(offset.x, offset.y) + transform.position;
     }
 
-    private static Quaternion GetRotationAt(Direction dir) =>
-        DirectionUtility.DirectionToOrientation[dir];
+    private static Quaternion GetRotationAt(Direction dir) => DirectionUtility.DirectionToOrientation[dir];
 }

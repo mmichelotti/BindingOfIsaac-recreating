@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
@@ -12,11 +13,13 @@ public class Tile : MonoBehaviour
     private float wallThickness = 1.0f;
 
     private RoomBlueprint normalRoom;
-    private ConnectionsHandler dc;
+    private ConnectionsHandler ch;
+    public Dictionary<Direction, bool> doors = new();
+    public Dictionary<Direction, bool> walls = new();
 
     private void Awake()
     {
-        dc = GetComponent<ConnectionsHandler>();
+        ch = GetComponent<ConnectionsHandler>();
         normalRoom = new(GameManager.Instance.GridManager.Grid.Size, wallThickness);
     }
 
@@ -24,23 +27,40 @@ public class Tile : MonoBehaviour
     {
         GameObject floor = Instantiate(floorPF, transform);
         floor.transform.localScale = normalRoom.Scale;
-        dc.InstantiateConnections();
+        ch.InstantiateConnections();
+        foreach (Direction dir in System.Enum.GetValues(typeof(Direction)))
+        {
+            doors[dir] = false;
+            walls[dir] = true;
+        }
     }
 
     public void PositionConnections()
     {
-        dc.SetConnections(normalRoom);
+        ch.SetConnectionsTransform(normalRoom);
     }
 
     public void OpenConnections(Direction dir)
     {
-        dc.OpenDoor(dir);
-        dc.OpenWall(dir);
+        ch.OpenDoor(dir);
+        ch.OpenWall(dir);
+        walls[dir] = true;
+        doors[dir] = true;
     }
 
     public void CloseConnections(Direction dir)
     {
-        dc.CloseDoor(dir);
-        dc.CloseWall(dir);
+        ch.CloseDoor(dir);
+        ch.CloseWall(dir);
+        doors[dir] = false;
+        walls[dir] = false;
+    }
+    public void DebugWalls()
+    {
+        foreach (var item in walls)
+        {
+            string value = item.Value ? "YES" : "NO";
+            Debug.Log($"{item.Key} {value}");
+        }
     }
 }

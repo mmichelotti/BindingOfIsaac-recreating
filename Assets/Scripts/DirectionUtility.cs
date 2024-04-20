@@ -24,8 +24,7 @@ public enum SpawnPosition
 
 public static class DirectionUtility
 {
-    public static Dictionary<Direction, Vector2Int> DirectionToVector { get; } =
-        new()
+    public static Dictionary<Direction, Vector2Int> DirectionToVector { get; } = new()
         {
             { Direction.Up, new Vector2Int(0, 1) },
             { Direction.Right, new Vector2Int(1, 0) },
@@ -33,8 +32,7 @@ public static class DirectionUtility
             { Direction.Left, new Vector2Int(-1, 0) }
         };
 
-    public static Dictionary<Direction, Quaternion> DirectionToOrientation { get; } =
-        new()
+    public static Dictionary<Direction, Quaternion> DirectionToOrientation { get; } = new()
         {
             { Direction.Up, Quaternion.Euler(0, 0, 0) },
             { Direction.Right, Quaternion.Euler(0, 0, 90) },
@@ -42,8 +40,7 @@ public static class DirectionUtility
             { Direction.Left, Quaternion.Euler(0, 0, 270) }
         };
 
-    public static Dictionary<SpawnPosition, Vector2> PositionToCoordinate { get; } =
-        new()
+    public static Dictionary<SpawnPosition, Vector2> PositionToCoordinate { get; } = new()
         {
             { SpawnPosition.Center, new(.5f, .5f) },
             { SpawnPosition.UpLeft, new(0, 1) },

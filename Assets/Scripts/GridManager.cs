@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private Grid grid;
 
+    [Range(0,1)]
     [SerializeField]
     private float chanceForDoor = 0.8f;
 
@@ -66,12 +67,13 @@ public class GridManager : MonoBehaviour
 
     public void OpenDoors()
     {
-        foreach (Vector2Int pos in roomsAtPosition.Keys)
+        foreach (var pos in roomsAtPosition)
         {
-            OpenDoorsAt(pos);
+            OpenDoorsAt(pos.Key);
+            Debug.LogWarning($"At {pos.Key}: ");
+            pos.Value.DebugWalls();
         }
     }
-
     public void OpenDoorsAt(Vector2Int pos)
     {
         foreach (var dir in DirectionUtility.DirectionToVector)
@@ -93,6 +95,15 @@ public class GridManager : MonoBehaviour
                     adjacentRoom.CloseConnections(oppositeDirection);
                 }
             }
+        }
+    }
+    public void CountRooms()
+    {
+        Dictionary<Vector2Int, Tile> tilesCopy = new(roomsAtPosition);
+        Queue<Tile> localQueue = new();
+        foreach (var tile in tilesCopy)
+        {
+
         }
     }
 
