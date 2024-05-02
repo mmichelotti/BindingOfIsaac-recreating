@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private float wallThickness = 1.0f;
 
-    private RoomBlueprint normalRoom;
+    private TileBlueprint normalRoom;
     private ConnectionsHandler ch;
     public Dictionary<Direction, bool> doors = new();
     public Dictionary<Direction, bool> walls = new();

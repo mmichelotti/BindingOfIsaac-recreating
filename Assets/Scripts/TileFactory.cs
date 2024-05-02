@@ -10,6 +10,7 @@ public class TileFactory : MonoBehaviour
 
     public void PrepareRoomsPooling()
     {
+
         GameObject parent = new("Rooms");
         int roomsCount = GameManager.Instance.SpawnManager.RoomsAmount;
         for (int i = 0; i < roomsCount; i++)

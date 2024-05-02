@@ -72,9 +72,11 @@ public class SpawnManager : MonoBehaviour
         GridManager.RegisterRoomAt(pos);
     }
 
+
+    //To Do - First room always have 4 neighbours
     private bool ShouldGenerateRoom(Vector2Int pos) =>
         roomCount < RoomsAmount
         && (pos == firstRoom || Random.value < probabilityOfSuccess) // First room is exception
         && GridManager.Grid.IsWithinGrid(pos)
-        && GridManager.CountNeighbors(pos) <= 1; //creates corridor, the higher the number, the more of a cluster of tiles it creates
+        && GridManager.CountNeighbors(pos) < 2; //Limit the neighbours in order to craete more corridor-like shape
 }

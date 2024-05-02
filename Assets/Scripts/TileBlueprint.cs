@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public struct RoomBlueprint
+public struct TileBlueprint
 {
     public Vector2 Scale;
 
@@ -17,7 +17,7 @@ public struct RoomBlueprint
     [HideInInspector]
     public Vector2 Spacing;
 
-    public RoomBlueprint(Vector2 scale, float edgeThickness)
+    public TileBlueprint(Vector2 scale, float edgeThickness)
     {
         Scale = scale;
         CenterOffset = scale / 2;

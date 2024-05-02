@@ -30,7 +30,7 @@ public class ConnectionsHandler : MonoBehaviour
         }
     }
 
-    public void SetConnectionsTransform(RoomBlueprint rBP)
+    public void SetConnectionsTransform(TileBlueprint rBP)
     {
         float doorLength = Mathf.Min(rBP.Scale.x, rBP.Scale.y) * doorSize;
         foreach (var (dir, (door, wall)) in directionToConnections)
