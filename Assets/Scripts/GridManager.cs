@@ -5,18 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
-    public Grid Grid
-    {
-        get => grid;
-        set => grid = value;
-    }
+    [field:SerializeField] public Grid Grid { get; private set; }
 
-    [SerializeField]
-    private Grid grid;
-
-    [Range(0,1)]
-    [SerializeField]
-    private float chanceForDoor = 0.8f;
+    [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
 
     private TileFactory rf;
 
@@ -106,10 +97,7 @@ public class GridManager : MonoBehaviour
 
         }
     }
-
-    public bool HasLessThenXNeighbors(Vector2Int pos, int amount) => CountNeighbors(pos) < amount;
-
-    private int CountNeighbors(Vector2Int pos) =>
+    public int CountNeighbors(Vector2Int pos) =>
         (
             from Vector2Int dir in DirectionUtility.DirectionToVector.Values
             where roomsAtPosition.ContainsKey(pos + dir)

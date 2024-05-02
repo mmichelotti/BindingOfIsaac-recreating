@@ -76,5 +76,5 @@ public class SpawnManager : MonoBehaviour
         roomCount < RoomsAmount
         && (pos == firstRoom || Random.value < probabilityOfSuccess) // First room is exception
         && GridManager.Grid.IsWithinGrid(pos)
-        && GridManager.HasLessThenXNeighbors(pos, 2);
+        && GridManager.CountNeighbors(pos) <= 1; //creates corridor, the higher the number, the more of a cluster of tiles it creates
 }
