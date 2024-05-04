@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
-    [field:SerializeField] public Grid Grid { get; private set; }
+    [field:SerializeField] public MazeGrid Grid { get; private set; }
 
     [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
 

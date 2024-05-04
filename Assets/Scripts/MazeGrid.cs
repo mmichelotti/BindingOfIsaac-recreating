@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Grid : MonoBehaviour
+public class MazeGrid : MonoBehaviour
 {
     [field: SerializeField]
     public int Length { get; set; } = 11;
@@ -14,14 +14,11 @@ public class Grid : MonoBehaviour
         return new((int)vector.x, (int)vector.y);
     }
 
-    public Vector3 CoordinateToPosition(Vector2Int coord) =>
-        new(GetHalfPoint(Size.x, coord.x), GetHalfPoint(Size.y, coord.y));
+    public Vector3 CoordinateToPosition(Vector2Int coord) => new(GetHalfPoint(Size.x, coord.x), GetHalfPoint(Size.y, coord.y));
 
-    private float GetHalfPoint(float roomDimension, int gridIndex) =>
-        roomDimension * (gridIndex - Length / 2);
+    private float GetHalfPoint(float roomDimension, int gridIndex) => roomDimension * (gridIndex - Length / 2);
 
-    public bool IsWithinGrid(Vector2Int position) =>
-        position.x >= 0 && position.y >= 0 && position.x < Length && position.y < Length;
+    public bool IsWithinGrid(Vector2Int position) => position.x >= 0 && position.y >= 0 && position.x < Length && position.y < Length;
 
     private void OnDrawGizmos()
     {
