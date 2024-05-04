@@ -61,8 +61,6 @@ public class GridManager : MonoBehaviour
         foreach (var pos in roomsAtPosition)
         {
             OpenDoorsAt(pos.Key);
-            Debug.LogWarning($"At {pos.Key}: ");
-            pos.Value.DebugWalls();
         }
     }
     public void OpenDoorsAt(Vector2Int pos)
@@ -88,19 +86,13 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    public void CountRooms()
-    {
-        Dictionary<Vector2Int, Tile> tilesCopy = new(roomsAtPosition);
-        Queue<Tile> localQueue = new();
-        foreach (var tile in tilesCopy)
-        {
 
-        }
-    }
     public int CountNeighbors(Vector2Int pos) =>
         (
             from Vector2Int dir in DirectionUtility.DirectionToVector.Values
             where roomsAtPosition.ContainsKey(pos + dir)
             select dir
         ).Count();
+
+
 }

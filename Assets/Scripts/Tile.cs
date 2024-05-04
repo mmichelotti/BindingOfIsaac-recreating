@@ -14,8 +14,6 @@ public class Tile : MonoBehaviour
 
     private TileBlueprint normalRoom;
     private ConnectionsHandler ch;
-    public Dictionary<Direction, bool> doors = new();
-    public Dictionary<Direction, bool> walls = new();
 
     private void Awake()
     {
@@ -28,11 +26,7 @@ public class Tile : MonoBehaviour
         GameObject floor = Instantiate(floorPF, transform);
         floor.transform.localScale = normalRoom.Scale;
         ch.InstantiateConnections();
-        foreach (Direction dir in System.Enum.GetValues(typeof(Direction)))
-        {
-            doors[dir] = false;
-            walls[dir] = true;
-        }
+
     }
 
     public void PositionConnections()
@@ -44,23 +38,13 @@ public class Tile : MonoBehaviour
     {
         ch.OpenDoor(dir);
         ch.OpenWall(dir);
-        walls[dir] = true;
-        doors[dir] = true;
+
     }
 
     public void CloseConnections(Direction dir)
     {
         ch.CloseDoor(dir);
         ch.CloseWall(dir);
-        doors[dir] = false;
-        walls[dir] = false;
-    }
-    public void DebugWalls()
-    {
-        foreach (var item in walls)
-        {
-            string value = item.Value ? "YES" : "NO";
-            Debug.Log($"{item.Key} {value}");
-        }
+
     }
 }
