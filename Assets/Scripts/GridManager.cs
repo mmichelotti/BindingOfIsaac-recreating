@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
+    [SerializeField]
+    SpawnPosition startingPosition;
+
     [field:SerializeField] public MazeGrid Grid { get; private set; }
 
     [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
@@ -12,6 +15,9 @@ public class GridManager : MonoBehaviour
     private TileFactory tileFactory;
 
     private readonly Dictionary<Vector2Int, Tile> tileAtPosition = new();
+    private List<Room> rooms = new();
+
+    public Vector2Int FirstTile { get; private set; }
 
     private void Awake()
     {
@@ -20,23 +26,24 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
-        tileFactory.PrepareRoomsPooling();
+        FirstTile = Grid.GetCoordinatesAt(startingPosition);
+        tileFactory.PrepareTilesPooling();
     }
 
-    public bool RegisterRoomAt(Vector2Int pos)
+    public bool RegisterTileAt(Vector2Int pos)
     {
         if (!tileAtPosition.ContainsKey(pos))
         {
-            Tile room = tileFactory.ActivateRoom(Grid.CoordinateToPosition(pos));
-            room.RoomCoordinate = pos;
-            tileAtPosition.Add(pos, room);
+            Tile tile = tileFactory.ActivateTile(Grid.CoordinateToPosition(pos));
+            tile.Coordinates = pos;
+            tileAtPosition.Add(pos, tile);
             return true;
         }
 
         return false;
     }
 
-    public bool ClearRoomAt(Vector2Int pos)
+    public bool ClearTileAt(Vector2Int pos)
     {
         if (tileAtPosition.ContainsKey(pos))
         {
@@ -48,27 +55,42 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
-    public void ClearRooms()
+    public void ClearTiles()
     {
-        foreach (var room in tileAtPosition.Values)
-            tileFactory.Deactivate(room);
+        foreach (var tile in tileAtPosition.Values)
+            tileFactory.Deactivate(tile);
 
         tileAtPosition.Clear();
     }
 
     public void OpenDoors()
     {
-        foreach (var pos in tileAtPosition)
-        {
-            OpenDoorsAt(pos.Key);
-        }
+        OpenDoors(tileAtPosition[FirstTile]);
     }
-    public void OpenDoorsAt(Vector2Int pos)
+
+    private readonly HashSet<Vector2Int> visitedTiles = new();
+
+    public void OpenDoors(Tile tile)
     {
+        Vector2Int pos = tile.Coordinates;
+        visitedTiles.Add(pos);
+        // tile.Room ??= new();
+        if (tile.Room is null)
+        {
+            tile.Room = new();
+            tile.Room.Tiles.Add(tile);
+            rooms.Add(tile.Room);
+        }
         foreach (var dir in DirectionUtility.DirectionToVector)
         {
             Vector2Int newPos = pos + dir.Value;
-            if (tileAtPosition.TryGetValue(newPos, out Tile adjacentRoom))
+
+            if (visitedTiles.Contains(newPos))
+            {
+                continue;
+            }
+
+            if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
                 tileAtPosition[pos].PositionConnections();
                 Direction oppositeDirection = DirectionUtility.GetOppositeDirection(dir.Key);
@@ -76,23 +98,44 @@ public class GridManager : MonoBehaviour
                 if (Random.value < chanceForDoor)
                 {
                     tileAtPosition[pos].OpenConnections(dir.Key);
-                    adjacentRoom.OpenConnections(oppositeDirection);
+                    adjacentTile.OpenConnections(oppositeDirection);
                 }
                 else
                 {
+                    adjacentTile.Room = tile.Room;
+                    tile.Room.Tiles.Add(adjacentTile);
                     tileAtPosition[pos].CloseConnections(dir.Key);
-                    adjacentRoom.CloseConnections(oppositeDirection);
+                    adjacentTile.CloseConnections(oppositeDirection);
                 }
+                OpenDoors(adjacentTile);
             }
         }
+        tile.DebugRoomColor();
     }
 
-    public int CountNeighbors(Vector2Int pos) =>
-        (
-            from Vector2Int dir in DirectionUtility.DirectionToVector.Values
-            where tileAtPosition.ContainsKey(pos + dir)
-            select dir
-        ).Count();
+    // class Base { }
+    // class Derived : Base { }
 
+    public int CountNeighbors(Vector2Int pos)
+    {
+        //System.Func<Vector2Int, bool> func;
+        //System.Func<Derived, Base> action;
+        //
+        //Derived Test(Base derived) { return null; }
+        //
+        //action = Test;
 
+        //bool ShouldTakeThisValue(Vector2Int dir)
+        //{
+        //    return tileAtPosition.ContainsKey(pos + dir);
+        //}
+        //
+        //func = ShouldTakeThisValue;
+        //func = dir => tileAtPosition.ContainsKey(pos + dir);
+
+        return DirectionUtility.DirectionToVector.Values
+            //.Where(func)
+            .Where(dir => tileAtPosition.ContainsKey(pos + dir))
+            .Count();
+    }
 }

@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[SelectionBase]
 public class Tile : MonoBehaviour
 {
-    public Vector2Int RoomCoordinate { get; set; }
+    public Vector2Int Coordinates { get; set; }
 
     [SerializeField]
     private GameObject floorPF;
@@ -12,8 +13,12 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private float wallThickness = 1.0f;
 
+    [SerializeReference]
+    public Room Room;
+
     private TileBlueprint normalTile;
     private ConnectionsHandler ch;
+    private GameObject floor;
 
     private void Awake()
     {
@@ -23,7 +28,7 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        GameObject floor = Instantiate(floorPF, transform);
+        floor = Instantiate(floorPF, transform);
         floor.transform.localScale = normalTile.Scale;
         ch.InstantiateConnections();
 
@@ -38,13 +43,16 @@ public class Tile : MonoBehaviour
     {
         ch.OpenDoor(dir);
         ch.OpenWall(dir);
-
     }
 
     public void CloseConnections(Direction dir)
     {
         ch.CloseDoor(dir);
         ch.CloseWall(dir);
+    }
 
+    public void DebugRoomColor()
+    {
+        floor.GetComponent<SpriteRenderer>().color = Room.Color;
     }
 }

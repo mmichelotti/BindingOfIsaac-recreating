@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public struct TileBlueprint
+public struct TileBlueprint : System.IEquatable<TileBlueprint>
 {
     public Vector2 Scale;
 
@@ -26,5 +26,21 @@ public struct TileBlueprint
         EdgeThickness = edgeThickness;
         EdgeOffset = edgeThickness / 2;
         Spacing = new(CenterOffset.x - EdgeOffset, CenterOffset.y - EdgeOffset);
+    }
+
+    // Implementazione del confronto di uguaglianza
+    public readonly bool Equals(TileBlueprint other)
+    {
+        return Scale == other.Scale && EdgeThickness == other.EdgeThickness;
+    }
+
+    public override readonly bool Equals(object obj)
+    {
+        return obj is TileBlueprint other && Equals(other);
+    }
+
+    public override readonly int GetHashCode()
+    {
+        return System.HashCode.Combine(Scale, EdgeThickness);
     }
 }

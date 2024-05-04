@@ -16,7 +16,7 @@ public class MazeGrid : MonoBehaviour
 
     public Vector3 CoordinateToPosition(Vector2Int coord) => new(GetHalfPoint(Size.x, coord.x), GetHalfPoint(Size.y, coord.y));
 
-    private float GetHalfPoint(float roomDimension, int gridIndex) => roomDimension * (gridIndex - Length / 2);
+    private float GetHalfPoint(float tileDimension, int gridIndex) => tileDimension * (gridIndex - Length / 2);
 
     public bool IsWithinGrid(Vector2Int position) => position.x >= 0 && position.y >= 0 && position.x < Length && position.y < Length;
 

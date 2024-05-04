@@ -7,9 +7,6 @@ public class SpawnManager : MonoBehaviour
 {
     private GridManager GridManager;
 
-    [SerializeField]
-    SpawnPosition startingPosition;
-
     [field: SerializeField]
     public int TilesAmount { get; set; } = 30;
 
@@ -35,12 +32,12 @@ public class SpawnManager : MonoBehaviour
             Vector2Int pos = tileQueue.Dequeue();
             foreach (Vector2Int dir in DirectionUtility.DirectionToVector.Values)
             {
-                TryGenerateRoomAt(pos + dir);
+                TryGenerateTileAt(pos + dir);
             }
         }
         else if (tilesCount < TilesAmount)
         {
-            GenerateRooms();
+            GenerateTiles();
         }
         else if (!generationComplete)
         {
@@ -50,20 +47,20 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    private void GenerateRooms()
+    private void GenerateTiles()
     {
-        GridManager.ClearRooms();
+        GridManager.ClearTiles();
         tileQueue.Clear();
         tilesCount = 0;
         generationComplete = false;
 
-        firstTile = GridManager.Grid.GetCoordinatesAt(startingPosition);
+        firstTile = GridManager.FirstTile;
         StartGenerationAt(firstTile);
     }
 
-    private void TryGenerateRoomAt(Vector2Int pos)
+    private void TryGenerateTileAt(Vector2Int pos)
     {
-        if (!ShouldGenerateRoom(pos)) return;
+        if (!ShouldGenerateTile(pos)) return;
 
         StartGenerationAt(pos);
     }
@@ -72,14 +69,14 @@ public class SpawnManager : MonoBehaviour
     {
         tileQueue.Enqueue(pos);
         tilesCount++;
-        GridManager.RegisterRoomAt(pos);
+        GridManager.RegisterTileAt(pos);
     }
 
 
-    //To Do - First room always have 4 neighbours
-    private bool ShouldGenerateRoom(Vector2Int pos) =>
+    //To Do - First tile always have 4 neighbours (room)
+    private bool ShouldGenerateTile(Vector2Int pos) =>
         tilesCount < TilesAmount
-        && (pos == firstTile || Random.value < probabilityOfSuccess) // First room is exception
+        && (pos == firstTile || Random.value < probabilityOfSuccess) // First tile is exception
         && GridManager.Grid.IsWithinGrid(pos)
         && GridManager.CountNeighbors(pos) < 2; //Limit the neighbours in order to craete more corridor-like shape
 }

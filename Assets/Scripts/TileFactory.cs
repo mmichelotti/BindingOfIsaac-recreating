@@ -8,36 +8,36 @@ public class TileFactory : MonoBehaviour
     private readonly List<Tile> tilePool = new();
     private int currentIndex = 0;
 
-    public void PrepareRoomsPooling()
+    public void PrepareTilesPooling()
     {
 
-        GameObject parent = new("Rooms");
-        int roomsCount = GameManager.Instance.SpawnManager.TilesAmount;
-        for (int i = 0; i < roomsCount; i++)
+        GameObject parent = new("Tiles");
+        int tilesCount = GameManager.Instance.SpawnManager.TilesAmount;
+        for (int i = 0; i < tilesCount; i++)
         {
-            Tile newRoom = Instantiate(tilePF, parent.transform);
-            tilePool.Add(newRoom);
-            Deactivate(newRoom);
+            Tile newTile = Instantiate(tilePF, parent.transform);
+            tilePool.Add(newTile);
+            Deactivate(newTile);
         }
     }
 
-    public Tile ActivateRoom(Vector3 wsPos, string name = "")
+    public Tile ActivateTile(Vector3 wsPos, string name = "")
     {
-        Tile room = GetPooledRoom();
-        Activate(room);
-        room.transform.position = wsPos;
-        room.name = $"{name}Room";
-        return room;
+        Tile tile = GetPooledTile();
+        Activate(tile);
+        tile.transform.position = wsPos;
+        tile.name = $"{name}Tile";
+        return tile;
     }
 
-    private Tile GetPooledRoom()
+    private Tile GetPooledTile()
     {
-        Tile room = tilePool[currentIndex];
+        Tile tile = tilePool[currentIndex];
         currentIndex = (currentIndex + 1) % tilePool.Count; // Wrap index if it goes beyond the pool size
-        return room;
+        return tile;
     }
 
-    public void Activate(Tile room) => room.gameObject.SetActive(true);
+    public void Activate(Tile tile) => tile.gameObject.SetActive(true);
 
-    public void Deactivate(Tile room) => room.gameObject.SetActive(false);
+    public void Deactivate(Tile tile) => tile.gameObject.SetActive(false);
 }
