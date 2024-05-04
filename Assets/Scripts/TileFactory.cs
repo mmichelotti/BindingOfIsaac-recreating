@@ -4,19 +4,19 @@ using UnityEngine;
 public class TileFactory : MonoBehaviour
 {
     [SerializeField]
-    private Tile roomPF;
-    private readonly List<Tile> roomPool = new();
+    private Tile tilePF;
+    private readonly List<Tile> tilePool = new();
     private int currentIndex = 0;
 
     public void PrepareRoomsPooling()
     {
 
         GameObject parent = new("Rooms");
-        int roomsCount = GameManager.Instance.SpawnManager.RoomsAmount;
+        int roomsCount = GameManager.Instance.SpawnManager.TilesAmount;
         for (int i = 0; i < roomsCount; i++)
         {
-            Tile newRoom = Instantiate(roomPF, parent.transform);
-            roomPool.Add(newRoom);
+            Tile newRoom = Instantiate(tilePF, parent.transform);
+            tilePool.Add(newRoom);
             Deactivate(newRoom);
         }
     }
@@ -32,8 +32,8 @@ public class TileFactory : MonoBehaviour
 
     private Tile GetPooledRoom()
     {
-        Tile room = roomPool[currentIndex];
-        currentIndex = (currentIndex + 1) % roomPool.Count; // Wrap index if it goes beyond the pool size
+        Tile room = tilePool[currentIndex];
+        currentIndex = (currentIndex + 1) % tilePool.Count; // Wrap index if it goes beyond the pool size
         return room;
     }
 

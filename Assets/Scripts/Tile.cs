@@ -12,26 +12,26 @@ public class Tile : MonoBehaviour
     [SerializeField]
     private float wallThickness = 1.0f;
 
-    private TileBlueprint normalRoom;
+    private TileBlueprint normalTile;
     private ConnectionsHandler ch;
 
     private void Awake()
     {
         ch = GetComponent<ConnectionsHandler>();
-        normalRoom = new(GameManager.Instance.GridManager.Grid.Size, wallThickness);
+        normalTile = new(GameManager.Instance.GridManager.Grid.Size, wallThickness);
     }
 
     private void Start()
     {
         GameObject floor = Instantiate(floorPF, transform);
-        floor.transform.localScale = normalRoom.Scale;
+        floor.transform.localScale = normalTile.Scale;
         ch.InstantiateConnections();
 
     }
 
     public void PositionConnections()
     {
-        ch.SetConnectionsTransform(normalRoom);
+        ch.SetConnectionsTransform(normalTile);
     }
 
     public void OpenConnections(Direction dir)

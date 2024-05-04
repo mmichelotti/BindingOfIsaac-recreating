@@ -9,27 +9,27 @@ public class GridManager : MonoBehaviour
 
     [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
 
-    private TileFactory rf;
+    private TileFactory tileFactory;
 
-    private readonly Dictionary<Vector2Int, Tile> roomsAtPosition = new();
+    private readonly Dictionary<Vector2Int, Tile> tileAtPosition = new();
 
     private void Awake()
     {
-        rf = GetComponent<TileFactory>();
+        tileFactory = GetComponent<TileFactory>();
     }
 
     private void Start()
     {
-        rf.PrepareRoomsPooling();
+        tileFactory.PrepareRoomsPooling();
     }
 
     public bool RegisterRoomAt(Vector2Int pos)
     {
-        if (!roomsAtPosition.ContainsKey(pos))
+        if (!tileAtPosition.ContainsKey(pos))
         {
-            Tile room = rf.ActivateRoom(Grid.CoordinateToPosition(pos));
+            Tile room = tileFactory.ActivateRoom(Grid.CoordinateToPosition(pos));
             room.RoomCoordinate = pos;
-            roomsAtPosition.Add(pos, room);
+            tileAtPosition.Add(pos, room);
             return true;
         }
 
@@ -38,10 +38,10 @@ public class GridManager : MonoBehaviour
 
     public bool ClearRoomAt(Vector2Int pos)
     {
-        if (roomsAtPosition.ContainsKey(pos))
+        if (tileAtPosition.ContainsKey(pos))
         {
-            rf.Deactivate(roomsAtPosition[pos]);
-            roomsAtPosition.Remove(pos);
+            tileFactory.Deactivate(tileAtPosition[pos]);
+            tileAtPosition.Remove(pos);
             return true;
         }
 
@@ -50,15 +50,15 @@ public class GridManager : MonoBehaviour
 
     public void ClearRooms()
     {
-        foreach (var room in roomsAtPosition.Values)
-            rf.Deactivate(room);
+        foreach (var room in tileAtPosition.Values)
+            tileFactory.Deactivate(room);
 
-        roomsAtPosition.Clear();
+        tileAtPosition.Clear();
     }
 
     public void OpenDoors()
     {
-        foreach (var pos in roomsAtPosition)
+        foreach (var pos in tileAtPosition)
         {
             OpenDoorsAt(pos.Key);
         }
@@ -68,19 +68,19 @@ public class GridManager : MonoBehaviour
         foreach (var dir in DirectionUtility.DirectionToVector)
         {
             Vector2Int newPos = pos + dir.Value;
-            if (roomsAtPosition.TryGetValue(newPos, out Tile adjacentRoom))
+            if (tileAtPosition.TryGetValue(newPos, out Tile adjacentRoom))
             {
-                roomsAtPosition[pos].PositionConnections();
+                tileAtPosition[pos].PositionConnections();
                 Direction oppositeDirection = DirectionUtility.GetOppositeDirection(dir.Key);
 
                 if (Random.value < chanceForDoor)
                 {
-                    roomsAtPosition[pos].OpenConnections(dir.Key);
+                    tileAtPosition[pos].OpenConnections(dir.Key);
                     adjacentRoom.OpenConnections(oppositeDirection);
                 }
                 else
                 {
-                    roomsAtPosition[pos].CloseConnections(dir.Key);
+                    tileAtPosition[pos].CloseConnections(dir.Key);
                     adjacentRoom.CloseConnections(oppositeDirection);
                 }
             }
@@ -90,7 +90,7 @@ public class GridManager : MonoBehaviour
     public int CountNeighbors(Vector2Int pos) =>
         (
             from Vector2Int dir in DirectionUtility.DirectionToVector.Values
-            where roomsAtPosition.ContainsKey(pos + dir)
+            where tileAtPosition.ContainsKey(pos + dir)
             select dir
         ).Count();
 
