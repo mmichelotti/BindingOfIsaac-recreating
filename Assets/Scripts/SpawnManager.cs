@@ -42,7 +42,7 @@ public class SpawnManager : MonoBehaviour
         else if (!generationComplete)
         {
             generationComplete = true;
-            GridManager.OpenDoors();
+            GridManager.ConnectTiles();
             enabled = false;
         }
     }

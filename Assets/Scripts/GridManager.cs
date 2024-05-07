@@ -63,14 +63,14 @@ public class GridManager : MonoBehaviour
         tileAtPosition.Clear();
     }
 
-    public void OpenDoors()
-    {
-        OpenDoors(tileAtPosition[FirstTile]);
-    }
-
     private readonly HashSet<Vector2Int> visitedTiles = new();
 
-    public void OpenDoors(Tile tile)
+    public void ConnectTiles()
+    {
+        ConnectTilesAt(tileAtPosition[FirstTile]);
+    }
+
+    public void ConnectTilesAt(Tile tile)
     {
         Vector2Int pos = tile.Coordinates;
         visitedTiles.Add(pos);
@@ -85,14 +85,15 @@ public class GridManager : MonoBehaviour
         {
             Vector2Int newPos = pos + dir.Value;
 
-            if (visitedTiles.Contains(newPos))
-            {
-                continue;
-            }
-
             if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
                 tileAtPosition[pos].PositionConnections();
+
+                if (visitedTiles.Contains(newPos))
+                {
+                    continue;
+                }
+
                 Direction oppositeDirection = DirectionUtility.GetOppositeDirection(dir.Key);
 
                 if (Random.value < chanceForDoor)
@@ -107,7 +108,7 @@ public class GridManager : MonoBehaviour
                     tileAtPosition[pos].CloseConnections(dir.Key);
                     adjacentTile.CloseConnections(oppositeDirection);
                 }
-                OpenDoors(adjacentTile);
+                ConnectTilesAt(adjacentTile);
             }
         }
         tile.DebugRoomColor();
