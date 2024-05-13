@@ -31,7 +31,6 @@ public class Tile : MonoBehaviour
         floor = Instantiate(floorPF, transform);
         floor.transform.localScale = normalTile.Scale;
         ch.InstantiateConnections();
-
     }
 
     public void PositionConnections()

@@ -5,8 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
-    [SerializeField]
-    SpawnPosition startingPosition;
+    [SerializeField] SpawnPosition startingPosition;
 
     [field:SerializeField] public MazeGrid Grid { get; private set; }
 
@@ -18,6 +17,27 @@ public class GridManager : MonoBehaviour
     private List<Room> rooms = new();
 
     public Vector2Int FirstTile { get; private set; }
+
+    public Room FurthestRoom
+    {
+        get
+        {
+            float dist = 0f;
+            Room from = tileAtPosition[FirstTile].Room;
+            Room mostDistant = from;
+            foreach (Room room in rooms)
+            {
+                float currentDist = Vector2.Distance(from.Pivot, room.Pivot);
+                if (currentDist > dist)
+                {
+                    dist = currentDist;
+                    mostDistant = room;
+                }
+            }
+            Debug.Log($"Origin: {from.Pivot}, Most Distance: {mostDistant.Pivot}");
+            return mostDistant;
+        }
+    }
 
     private void Awake()
     {
@@ -89,13 +109,9 @@ public class GridManager : MonoBehaviour
             {
                 tileAtPosition[pos].PositionConnections();
 
-                if (visitedTiles.Contains(newPos))
-                {
-                    continue;
-                }
+                if (visitedTiles.Contains(newPos)) continue;
 
-                Direction oppositeDirection = DirectionUtility.GetOppositeDirection(dir.Key);
-
+                Direction oppositeDirection = DirectionUtility.Opposite(dir.Key);
                 if (Random.value < chanceForDoor)
                 {
                     tileAtPosition[pos].OpenConnections(dir.Key);
@@ -114,11 +130,11 @@ public class GridManager : MonoBehaviour
         tile.DebugRoomColor();
     }
 
-    // class Base { }
-    // class Derived : Base { }
-
     public int CountNeighbors(Vector2Int pos)
     {
+        // class Base { }
+        // class Derived : Base { }
+
         //System.Func<Vector2Int, bool> func;
         //System.Func<Derived, Base> action;
         //

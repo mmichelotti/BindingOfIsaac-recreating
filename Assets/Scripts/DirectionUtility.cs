@@ -53,7 +53,11 @@ public static class DirectionUtility
             { SpawnPosition.Left, new(0, .5f) }
         };
 
-    public static Direction GetOppositeDirection(Direction dir)
+    /* //deprecated, less legible
+    public static Direction GetOppositeDirection(Direction dir) => (Direction)(((int)dir + 2) % 4);
+    */
+
+    public static Direction Opposite(Direction dir)
     {
         return dir switch
         {
@@ -65,7 +69,17 @@ public static class DirectionUtility
         };
     }
 
-    /* //deprecated, less legible
-    public static Direction GetOppositeDirection(Direction dir) => (Direction)(((int)dir + 2) % 4);
-    */
+    // PORCA MADONNA DIO PORCO DIO CAN 
+    // POSSIBILI OUT 1,1 / 1,0 / 1,-1 / 0,1 / 0,0 / 0,-1 / -1,1 / -1,0 / -1,-1
+    // COME POSITION TO COORDINATE
+    // VA GENERALIZZATO
+    public static Direction GetDirection(Vector2 origin, Vector2 target)
+    {
+        Vector2 difference = (target - origin).normalized;
+        float x = difference.x;
+        float y = difference.y;
+
+        if (Mathf.Abs(x) > Mathf.Abs(y)) return x > 0 ? Direction.Right : Direction.Left;
+        else return y > 0 ? Direction.Up : Direction.Down;
+    }
 }

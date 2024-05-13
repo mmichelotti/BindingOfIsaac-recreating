@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c39f8c062cafd6b4e9914d7b99785fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <TilesAmount>k__BackingField: 250
+  <TilesAmount>k__BackingField: 100
   probabilityOfSuccess: 0.65
 --- !u!1 &1536435638
 GameObject:
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingPosition: 0
   <Grid>k__BackingField: {fileID: 2147458967}
-  chanceForDoor: 0.054
+  chanceForDoor: 0.88
 --- !u!114 &1536435641
 MonoBehaviour:
   m_ObjectHideFlags: 0
