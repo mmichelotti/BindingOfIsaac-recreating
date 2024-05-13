@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] SpawnPosition startingPosition;
+    [SerializeField] DirectionExtended startingPosition;
 
     [field:SerializeField] public MazeGrid Grid { get; private set; }
 

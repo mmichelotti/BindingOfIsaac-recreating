@@ -72,5 +72,5 @@ public class ConnectionsHandler : MonoBehaviour
         return new Vector3(offset.x, offset.y) + transform.position;
     }
 
-    private static Quaternion GetRotationAt(Direction dir) => DirectionUtility.DirectionToOrientation[dir];
+    private static Quaternion GetRotationAt(Direction dir) => DirectionUtility.DirectionToRotation[dir];
 }

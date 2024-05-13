@@ -8,9 +8,9 @@ public class MazeGrid : MonoBehaviour
     [field: SerializeField]
     public Vector2 Size { get; set; } = new(20, 10);
 
-    public Vector2Int GetCoordinatesAt(SpawnPosition pos)
+    public Vector2Int GetCoordinatesAt(DirectionExtended pos)
     {
-        Vector2 vector = DirectionUtility.PositionToCoordinate[pos] * (Length - 1);
+        Vector2 vector = DirectionUtility.DirectionToMatrix(pos) * (Length - 1);
         return new((int)vector.x, (int)vector.y);
     }
 
