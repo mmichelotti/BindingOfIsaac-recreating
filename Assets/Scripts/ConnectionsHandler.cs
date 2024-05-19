@@ -39,7 +39,7 @@ public class ConnectionsHandler : MonoBehaviour
             Vector3 wallScale = new(wallLength, rBP.EdgeThickness);
             Vector3 doorScale = new(doorLength, rBP.EdgeThickness);
             Vector3 position = CalculateOffset(dir, rBP.Spacing);
-            Quaternion rotation = GetRotationAt(dir);
+            Quaternion rotation = dir.GetRotation();
 
             wall.transform.localScale = wallScale;
             wall.name = $"{dir}_Wall";
@@ -71,6 +71,4 @@ public class ConnectionsHandler : MonoBehaviour
         Vector2 offset = DirectionUtility.DirectionToVector[dir] * spacing;
         return new Vector3(offset.x, offset.y) + transform.position;
     }
-
-    private static Quaternion GetRotationAt(Direction dir) => DirectionUtility.DirectionToRotation[dir];
 }

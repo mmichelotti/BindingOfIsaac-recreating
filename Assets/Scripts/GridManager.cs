@@ -100,26 +100,26 @@ public class GridManager : MonoBehaviour
             tile.Room.Tiles.Add(tile);
             rooms.Add(tile.Room);
         }
-        foreach (var dir in DirectionUtility.DirectionToVector)
+        foreach (var (direction, offset) in DirectionUtility.DirectionToVector)
         {
-            Vector2Int newPos = pos + dir.Value;
+            Vector2Int newPos = pos + offset;
             //if (visitedTiles.Contains(newPos)) continue; //outer rooms
             if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
                 tileAtPosition[pos].PositionConnections();
                 if (visitedTiles.Contains(newPos)) continue;
 
-                Direction oppositeDirection = DirectionUtility.Opposite(dir.Key);
+                Direction oppositeDirection = direction.GetOpposite();
                 if (Random.value < chanceForDoor)
                 {
-                    tileAtPosition[pos].OpenConnections(dir.Key);
+                    tileAtPosition[pos].OpenConnections(direction);
                     adjacentTile.OpenConnections(oppositeDirection);
                 }
                 else
                 {
                     adjacentTile.Room = tile.Room;
                     tile.Room.Tiles.Add(adjacentTile);
-                    tileAtPosition[pos].CloseConnections(dir.Key);
+                    tileAtPosition[pos].CloseConnections(direction);
                     adjacentTile.CloseConnections(oppositeDirection);
                 }
                 ConnectTilesAt(adjacentTile);
@@ -147,6 +147,10 @@ public class GridManager : MonoBehaviour
         //
         //func = ShouldTakeThisValue;
         //func = dir => tileAtPosition.ContainsKey(pos + dir);
+
+        //IEnumerable<Vector2Int> values = DirectionUtility.DirectionToVector.Values;
+        //IEnumerable<Vector2Int> where = values.Where(dir => tileAtPosition.ContainsKey(pos + dir));
+        //int count = where.Count();
 
         return DirectionUtility.DirectionToVector.Values
             //.Where(func)

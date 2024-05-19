@@ -3,28 +3,38 @@ using UnityEngine;
 
 public enum Direction
 {
-    Up,
-    Right,
-    Down,
-    Left
+    Up    = 0b0001,
+    Right = 0b0010,
+    Down  = 0b0100,
+    Left  = 0b1000,
 }
+
+// | -> or binario
 public enum DirectionExtended
 {
-    Center,
-    UpLeft,
-    Up,
-    UpRight,
-    Right,
-    DownRight,
-    Down,
-    DownLeft,
-    Left
+    Center    = 0,
+    UpLeft    = Direction.Up | Direction.Left,
+    Up        = Direction.Up,
+    UpRight   = Direction.Up | Direction.Right,
+    Right     = Direction.Right,
+    DownRight = Direction.Down | Direction.Right,
+    Down      = Direction.Down,
+    DownLeft  = Direction.Down | Direction.Left,
+    Left      = Direction.Left,
 }
 
 
 public static class DirectionUtility
 {
-    public static Dictionary<Direction, Vector2Int> DirectionToVector { get; } = new()
+    //public static void BitwiseTest()
+    //{
+    //    DirectionExtended de = DirectionExtended.DownRight; // [ ][X][X][ ]
+    //    bool isRight = (de | DirectionExtended.Right) != 0;
+    //    bool isDown = (de | DirectionExtended.Down) != 0;
+    //    bool isUp = (de | DirectionExtended.Up) != 0;
+    //}
+
+    public static IReadOnlyDictionary<Direction, Vector2Int> DirectionToVector { get; } = new Dictionary<Direction, Vector2Int>()
     {
         { Direction.Up, new Vector2Int(0, 1) },
         { Direction.Right, new Vector2Int(1, 0) },
@@ -34,7 +44,7 @@ public static class DirectionUtility
     //direzione degli assi
     //direzione delle diagonali
     //punto centrale
-    public static Dictionary<DirectionExtended, Vector2Int> DirectionToVectorExtended { get; } = new()
+    public static IReadOnlyDictionary<DirectionExtended, Vector2Int> DirectionToVectorExtended { get; } = new Dictionary<DirectionExtended, Vector2Int>()
     {
         { DirectionExtended.Center, new Vector2Int(0, 0) },
         { DirectionExtended.UpLeft, new Vector2Int(-1, 1) },
@@ -47,28 +57,32 @@ public static class DirectionUtility
         { DirectionExtended.Left, new Vector2Int(-1, 0) }
     };
 
-    
     public static Vector2 DirectionToMatrix(DirectionExtended dir)
     {
         Vector2 temp = DirectionToVectorExtended[dir];
         return (temp / 2f) + new Vector2(.5f,.5f);
     }
 
-
-    public static Dictionary<Direction, Quaternion> DirectionToRotation { get; } = new()
+    public static Quaternion GetRotation(this Direction dir)
     {
-        { Direction.Up, Quaternion.Euler(0, 0, 0) },
-        { Direction.Right, Quaternion.Euler(0, 0, 90) },
-        { Direction.Down, Quaternion.Euler(0, 0, 180) },
-        { Direction.Left, Quaternion.Euler(0, 0, 270) }
-    };
+        return dir switch
+        {
+            Direction.Up => Quaternion.Euler(0, 0, 0),
+            Direction.Right => Quaternion.Euler(0, 0, 90),
+            Direction.Down => Quaternion.Euler(0, 0, 180),
+            Direction.Left => Quaternion.Euler(0, 0, 270),
+            _ => throw new System.NotImplementedException(),
+        };
+    }
 
 
     /* //deprecated, less legible
     public static Direction GetOppositeDirection(Direction dir) => (Direction)(((int)dir + 2) % 4);
     */
 
-    public static Direction Opposite(Direction dir)
+    // Mettere this al primo argomento lo rende un metodo di estensione.
+    // Significa che potrai chiamare il metodo come se facesse parte di quel tipo.
+    public static Direction GetOpposite(this Direction dir)
     {
         return dir switch
         {
