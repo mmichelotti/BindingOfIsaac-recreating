@@ -46,6 +46,7 @@ public static class DirectionUtility
         { DirectionExtended.DownLeft, new Vector2Int(-1, -1) },
         { DirectionExtended.Left, new Vector2Int(-1, 0) }
     };
+
     
     public static Vector2 DirectionToMatrix(DirectionExtended dir)
     {
@@ -83,11 +84,11 @@ public static class DirectionUtility
     // POSSIBILI OUT 1,1 / 1,0 / 1,-1 / 0,1 / 0,0 / 0,-1 / -1,1 / -1,0 / -1,-1
     // COME POSITION TO COORDINATE
     // VA GENERALIZZATO
-    public static Direction GetDirection2(Vector2 origin, Vector2 target)
+    public static Direction GetDirection(Vector2 origin, Vector2 target)
     {
         Vector2 difference = (target - origin).normalized;
-        int x = (int)Mathf.Round(difference.x);
-        int y = (int)Mathf.Round(difference.y);
+        float x = difference.x;
+        float y = difference.y;
 
 
         if (Mathf.Abs(x) > Mathf.Abs(y)) return x > 0 ? Direction.Right : Direction.Left;
