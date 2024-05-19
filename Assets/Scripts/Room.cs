@@ -5,7 +5,7 @@ using System;
 
 
 [System.Serializable]
-public class Room : IEquatable<Room>
+public class Room
 {
     //room kind
     //size (?) from tiles
@@ -39,8 +39,4 @@ public class Room : IEquatable<Room>
         Id = ++_lastId;
         name = Id.ToString();
     }
-
-    public bool Equals(Room other) => this.Id == other.Id;
-    public override bool Equals(object obj) => obj is Room other && Equals(other);
-    public override int GetHashCode() => HashCode.Combine(Id);
 }

@@ -34,7 +34,6 @@ public class GridManager : MonoBehaviour
                     mostDistant = room;
                 }
             }
-            Debug.Log($"Origin: {from.Pivot}, Most Distance: {mostDistant.Pivot}");
             return mostDistant;
         }
     }
@@ -104,11 +103,10 @@ public class GridManager : MonoBehaviour
         foreach (var dir in DirectionUtility.DirectionToVector)
         {
             Vector2Int newPos = pos + dir.Value;
-
+            //if (visitedTiles.Contains(newPos)) continue; //outer rooms
             if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
                 tileAtPosition[pos].PositionConnections();
-
                 if (visitedTiles.Contains(newPos)) continue;
 
                 Direction oppositeDirection = DirectionUtility.Opposite(dir.Key);

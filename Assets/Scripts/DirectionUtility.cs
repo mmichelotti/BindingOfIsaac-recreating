@@ -31,6 +31,9 @@ public static class DirectionUtility
         { Direction.Down, new Vector2Int(0, -1) },
         { Direction.Left, new Vector2Int(-1, 0) }
     };
+    //direzione degli assi
+    //direzione delle diagonali
+    //punto centrale
     public static Dictionary<DirectionExtended, Vector2Int> DirectionToVectorExtended { get; } = new()
     {
         { DirectionExtended.Center, new Vector2Int(0, 0) },
@@ -43,6 +46,7 @@ public static class DirectionUtility
         { DirectionExtended.DownLeft, new Vector2Int(-1, -1) },
         { DirectionExtended.Left, new Vector2Int(-1, 0) }
     };
+    
     public static Vector2 DirectionToMatrix(DirectionExtended dir)
     {
         Vector2 temp = DirectionToVectorExtended[dir];
@@ -57,20 +61,6 @@ public static class DirectionUtility
         { Direction.Down, Quaternion.Euler(0, 0, 180) },
         { Direction.Left, Quaternion.Euler(0, 0, 270) }
     };
-
-    public static Dictionary<DirectionExtended, Vector2> PositionToMatrix { get; } = new()
-    {
-        { DirectionExtended.Center, new(.5f, .5f) },
-        { DirectionExtended.UpLeft, new(0, 1) },
-        { DirectionExtended.Up, new(.5f, 1) },
-        { DirectionExtended.UpRight, new(1, 1) },
-        { DirectionExtended.Right, new(1, .5f) },
-        { DirectionExtended.DownRight, new(1, 0) },
-        { DirectionExtended.Down, new(.5f, 0) },
-        { DirectionExtended.DownLeft, new(0, 0) },
-        { DirectionExtended.Left, new(0, .5f) }
-    };
-
 
 
     /* //deprecated, less legible
