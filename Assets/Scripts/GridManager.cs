@@ -7,15 +7,14 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] DirectionExtended startingPosition;
 
-    [field:SerializeField] public MazeGrid Grid { get; private set; }
 
     [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
 
     private TileFactory tileFactory;
-
     private readonly Dictionary<Vector2Int, Tile> tileAtPosition = new();
     private List<Room> rooms = new();
 
+    [field:SerializeField] public MazeGrid Grid { get; private set; }
     public Vector2Int FirstTile { get; private set; }
 
     public Room FurthestRoom
@@ -156,5 +155,17 @@ public class GridManager : MonoBehaviour
             //.Where(func)
             .Where(dir => tileAtPosition.ContainsKey(pos + dir))
             .Count();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        for (int x = 0; x < Grid.Length; x++)
+        {
+            for (int y = 0; y < Grid.Length; y++)
+            {
+                Vector3 pos = Grid.CoordinateToPosition(new Vector2Int(x, y));
+                Gizmos.DrawWireCube(pos, new Vector3(Grid.Size.x, Grid.Size.y, 0));
+            }
+        }
     }
 }

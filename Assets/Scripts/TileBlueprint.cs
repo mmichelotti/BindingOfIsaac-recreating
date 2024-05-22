@@ -1,21 +1,16 @@
 using UnityEngine;
+using System;
 
-[System.Serializable]
-public struct TileBlueprint : System.IEquatable<TileBlueprint>
+[Serializable]
+public struct TileBlueprint : IEquatable<TileBlueprint>
 {
     public Vector2 Scale;
-
-    [HideInInspector]
-    public Vector2 CenterOffset;
-
     [Range(0, 1)]
     public float EdgeThickness;
 
-    [HideInInspector]
-    public float EdgeOffset;
-
-    [HideInInspector]
-    public Vector2 Spacing;
+    public readonly Vector2 CenterOffset;
+    public readonly float EdgeOffset;
+    public readonly Vector2 Spacing;
 
     public TileBlueprint(Vector2 scale, float edgeThickness)
     {
@@ -29,18 +24,13 @@ public struct TileBlueprint : System.IEquatable<TileBlueprint>
     }
 
     // Implementazione del confronto di uguaglianza
-    public readonly bool Equals(TileBlueprint other)
-    {
-        return Scale == other.Scale && EdgeThickness == other.EdgeThickness;
-    }
+    public readonly bool Equals(TileBlueprint other) =>
+        Scale == other.Scale && EdgeThickness == other.EdgeThickness;
+    
 
-    public override readonly bool Equals(object obj)
-    {
-        return obj is TileBlueprint other && Equals(other);
-    }
+    public override readonly bool Equals(object obj) => 
+        obj is TileBlueprint other && Equals(other);
 
-    public override readonly int GetHashCode()
-    {
-        return System.HashCode.Combine(Scale, EdgeThickness);
-    }
+    public override readonly int GetHashCode() => 
+        HashCode.Combine(Scale, EdgeThickness);
 }

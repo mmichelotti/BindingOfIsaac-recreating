@@ -4,7 +4,13 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public static GameManager Instance => instance;
-    public SpawnManager SpawnManager { get; private set; }
+
+
+    // per ALE: 
+    // questo getter mi riesegue la fnzione GetComponentInChildren ogni volta che SpawnManager viene chiamato
+    // quindi è megio fare come nel metodo GetMiniManagers(), ovvero che setto un riferimento una volta sola all'inizio
+    // e ogni volta che viene chiamato SpawnManager non deve rievocare il metodo?
+    public SpawnManager SpawnManager => GetComponentInChildren<SpawnManager>();
     public GridManager GridManager { get; private set; }
 
     private void Awake()
@@ -28,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     private void GetMiniManagers()
     {
-        SpawnManager = GetComponentInChildren<SpawnManager>();
+        //SpawnManager = GetComponentInChildren<SpawnManager>();
         GridManager = GetComponentInChildren<GridManager>();
     }
 }

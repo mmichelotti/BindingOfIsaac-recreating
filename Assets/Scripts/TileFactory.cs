@@ -7,6 +7,7 @@ public class TileFactory : MonoBehaviour
     private Tile tilePF;
     private readonly List<Tile> tilePool = new();
     private int currentIndex = 0;
+    private Tile CurrentPooledTile => tilePool[currentIndex];
 
     public void PrepareTilesPooling()
     {
@@ -23,21 +24,15 @@ public class TileFactory : MonoBehaviour
 
     public Tile ActivateTile(Vector3 wsPos, string name = "")
     {
-        Tile tile = GetPooledTile();
+        Tile tile = CurrentPooledTile;
         Activate(tile);
         tile.transform.position = wsPos;
         tile.name = $"{name}Tile";
+        IncrementIndex();
         return tile;
     }
 
-    private Tile GetPooledTile()
-    {
-        Tile tile = tilePool[currentIndex];
-        currentIndex = (currentIndex + 1) % tilePool.Count; // Wrap index if it goes beyond the pool size
-        return tile;
-    }
-
-    public void Activate(Tile tile) => tile.gameObject.SetActive(true);
-
-    public void Deactivate(Tile tile) => tile.gameObject.SetActive(false);
+    private void IncrementIndex() => currentIndex = (currentIndex + 1) % tilePool.Count; // Wrap index if it goes beyond the pool size
+    public static void Activate(Tile tile) => tile.gameObject.SetActive(true);
+    public static void Deactivate(Tile tile) => tile.gameObject.SetActive(false);
 }

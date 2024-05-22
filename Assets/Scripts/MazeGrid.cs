@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class MazeGrid : MonoBehaviour
+[CreateAssetMenu(fileName = "Grid", menuName = "ScriptableObjects/Grid", order = 1)]
+public class MazeGrid : ScriptableObject
 {
     [field: SerializeField]
     public int Length { get; set; } = 11;
@@ -20,16 +21,4 @@ public class MazeGrid : MonoBehaviour
 
     public bool IsWithinGrid(Vector2Int position) => position.x >= 0 && position.y >= 0 && position.x < Length && position.y < Length;
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.black;
-        for (int x = 0; x < Length; x++)
-        {
-            for (int y = 0; y < Length; y++)
-            {
-                Vector3 pos = CoordinateToPosition(new Vector2Int(x, y));
-                Gizmos.DrawWireCube(pos, new Vector3(Size.x, Size.y, 1));
-            }
-        }
-    }
 }
