@@ -21,6 +21,7 @@ public class TileFactory : MonoBehaviour
     {
         GameObject go = new("Tiles");
         tileQueue.PreparePooling(tilePF, TilesCount, go.transform);
+        // perché non è possibile dedurre il tipo?????????? provando a cambiare tipo di pf e di queue, non va 
     }
 
 
