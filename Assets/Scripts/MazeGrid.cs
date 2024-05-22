@@ -9,9 +9,9 @@ public class MazeGrid : ScriptableObject
     [field: SerializeField]
     public Vector2 Size { get; set; } = new(20, 10);
 
-    public Vector2Int GetCoordinatesAt(DirectionExtended pos)
+    public Vector2Int GetCoordinatesAt(Directions dir)
     {
-        Vector2 vector = DirectionUtility.DirectionToMatrix(pos) * (Length - 1);
+        Vector2 vector = DirectionUtility.DirectionToMatrix(dir) * (Length - 1);
         return new((int)vector.x, (int)vector.y);
     }
 

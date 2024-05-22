@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class PoolUtility
 {
-    public static void PreparePooling<T>(this Queue<T> queue, T prefab, int amount, Transform parent = null) where T : Object
+    public static void PreparePooling<T>(this Queue<T> queue, T prefab, int amount, Transform parent = null) where T : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {

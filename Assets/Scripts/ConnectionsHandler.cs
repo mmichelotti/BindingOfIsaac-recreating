@@ -13,14 +13,14 @@ public class ConnectionsHandler : MonoBehaviour
     [Range(0, 1)]
     private float doorSize = 0.25f;
 
-    private readonly Dictionary<Direction,(GameObject door, GameObject wall)> directionToConnections = new();
+    private readonly Dictionary<Directions,(GameObject door, GameObject wall)> directionToConnections = new();
 
     public void InstantiateConnections()
     {
         GameObject doors = InitEmptyGO("Doors", transform);
         GameObject walls = InitEmptyGO("Walls", transform);
 
-        foreach (Direction dir in System.Enum.GetValues(typeof(Direction)))
+        foreach (Directions dir in DirectionUtility.DirectionToVector.Keys)
         {
             GameObject door = Instantiate(doorPrefab, doors.transform);
             GameObject wall = Instantiate(wallPrefab, walls.transform);
@@ -51,13 +51,13 @@ public class ConnectionsHandler : MonoBehaviour
         }
     }
 
-    public void OpenDoor(Direction dir) => directionToConnections[dir].door.SetActive(true);
+    public void OpenDoor(Directions dir) => directionToConnections[dir].door.SetActive(true);
 
-    public void OpenWall(Direction dir) => directionToConnections[dir].wall.SetActive(true);
+    public void OpenWall(Directions dir) => directionToConnections[dir].wall.SetActive(true);
 
-    public void CloseDoor(Direction dir) => directionToConnections[dir].door.SetActive(false);
+    public void CloseDoor(Directions dir) => directionToConnections[dir].door.SetActive(false);
 
-    public void CloseWall(Direction dir) => directionToConnections[dir].wall.SetActive(false);
+    public void CloseWall(Directions dir) => directionToConnections[dir].wall.SetActive(false);
 
     private static GameObject InitEmptyGO(string name, Transform transform)
     {
@@ -66,7 +66,7 @@ public class ConnectionsHandler : MonoBehaviour
         return go;
     }
 
-    private Vector3 CalculateOffset(Direction dir, Vector2 spacing)
+    private Vector3 CalculateOffset(Directions dir, Vector2 spacing)
     {
         Vector2 offset = DirectionUtility.DirectionToVector[dir] * spacing;
         return new Vector3(offset.x, offset.y) + transform.position;

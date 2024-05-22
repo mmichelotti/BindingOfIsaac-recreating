@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] DirectionExtended startingPosition;
+    [SerializeField] Directions startingPosition;
 
     [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
 
@@ -106,7 +106,7 @@ public class GridManager : MonoBehaviour
                 tileAtPosition[pos].PositionConnections();
                 if (visitedTiles.Contains(newPos)) continue;
 
-                Direction oppositeDirection = direction.GetOpposite();
+                Directions oppositeDirection = direction.GetOpposite();
                 if (Random.value < chanceForDoor)
                 {
                     tileAtPosition[pos].OpenConnections(direction);

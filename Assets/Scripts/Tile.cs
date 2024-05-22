@@ -45,13 +45,13 @@ public class Tile : MonoBehaviour
         Debug.Log(normalTile);
     }
 
-    public void OpenConnections(Direction dir)
+    public void OpenConnections(Directions dir)
     {
         ch.OpenDoor(dir);
         ch.OpenWall(dir);
     }
 
-    public void CloseConnections(Direction dir)
+    public void CloseConnections(Directions dir)
     {
         ch.CloseDoor(dir);
         ch.CloseWall(dir);
