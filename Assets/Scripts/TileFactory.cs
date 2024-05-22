@@ -33,6 +33,6 @@ public class TileFactory : MonoBehaviour
     }
 
     private void IncrementIndex() => currentIndex = (currentIndex + 1) % tilePool.Count; // Wrap index if it goes beyond the pool size
-    public static void Activate(Tile tile) => tile.gameObject.SetActive(true);
-    public static void Deactivate(Tile tile) => tile.gameObject.SetActive(false);
+    public void Activate(Tile tile) => tile.gameObject.SetActive(true);
+    public void Deactivate(Tile tile) => tile.gameObject.SetActive(false);
 }
