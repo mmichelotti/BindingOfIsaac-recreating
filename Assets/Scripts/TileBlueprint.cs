@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public struct TileBlueprint : IEquatable<TileBlueprint>
+public struct TileBlueprint : IEquatable<TileBlueprint>, IFormattable
 {
     public Vector2 Scale;
     [Range(0, 1)]
@@ -33,4 +33,9 @@ public struct TileBlueprint : IEquatable<TileBlueprint>
 
     public override readonly int GetHashCode() => 
         HashCode.Combine(Scale, EdgeThickness);
+
+    public string ToString(string format, IFormatProvider formatProvider)
+    {
+        return $"X {Scale.x}, Y {Scale.y} \nThickness {EdgeThickness}";
+    }
 }

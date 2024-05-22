@@ -42,6 +42,7 @@ public class Tile : MonoBehaviour
     public void PositionConnections()
     {
         ch.SetConnectionsTransform(normalTile);
+        Debug.Log(normalTile);
     }
 
     public void OpenConnections(Direction dir)
