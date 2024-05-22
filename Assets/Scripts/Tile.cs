@@ -32,7 +32,12 @@ public class Tile : MonoBehaviour
         floor.transform.localScale = normalTile.Scale;
         ch.InstantiateConnections();
     }
-
+    public void Initialize(Vector2Int pos, string name = "")
+    {
+        Coordinates = pos;
+        transform.position = GameManager.Instance.GridManager.Grid.CoordinateToPosition(pos);
+        this.name = $"{name}Tile";
+    }
     public void PositionConnections()
     {
         ch.SetConnectionsTransform(normalTile);

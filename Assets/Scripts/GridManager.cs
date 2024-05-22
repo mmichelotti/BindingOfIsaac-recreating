@@ -7,7 +7,6 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] DirectionExtended startingPosition;
 
-
     [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
 
     private TileFactory tileFactory;
@@ -45,15 +44,14 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         FirstTile = Grid.GetCoordinatesAt(startingPosition);
-        tileFactory.PrepareTilesPooling();
     }
 
     public bool RegisterTileAt(Vector2Int pos)
     {
         if (!tileAtPosition.ContainsKey(pos))
         {
-            Tile tile = tileFactory.ActivateTile(Grid.CoordinateToPosition(pos));
-            tile.Coordinates = pos;
+            Tile tile = tileFactory.CurrentTile;
+            tile.Initialize(pos);
             tileAtPosition.Add(pos, tile);
             return true;
         }

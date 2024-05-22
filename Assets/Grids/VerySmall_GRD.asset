@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c10d5eb2c3f22e4daaa7e087d68badb, type: 3}
   m_Name: VerySmall_GRD
   m_EditorClassIdentifier: 
-  <Length>k__BackingField: 11
+  <Length>k__BackingField: 3
   <Size>k__BackingField: {x: 20, y: 10}
