@@ -6,7 +6,6 @@ public class TileFactory : MonoBehaviour
     [SerializeField]
     private Tile tilePF;
     private readonly Queue<Tile> tileQueue = new();
-    private readonly Queue<GameObject> test = new();
     private int TilesCount => GameManager.Instance.SpawnManager.TilesAmount;
     public Tile CurrentTile
     {
