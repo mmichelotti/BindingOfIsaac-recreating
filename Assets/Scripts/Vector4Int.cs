@@ -90,8 +90,8 @@ public struct Vector4Int : IEquatable<Vector4Int>, IFormattable
     public static bool operator >=(Vector4Int a, Vector4Int b) => a.Magnitude >= b.Magnitude;
     public static bool operator <=(Vector4Int a, Vector4Int b) => a.Magnitude <= b.Magnitude;
 
-    public static Vector4Int operator ++(Vector4Int a) => new(a.x++, a.y++, a.z++, a.w++);
-    public static Vector4Int operator --(Vector4Int a) => new(a.x--, a.y--, a.z--, a.w--);
+    public static Vector4Int operator ++(Vector4Int a) => new(a.x + 1, a.y + 1, a.z + 1, a.w + 1);
+    public static Vector4Int operator --(Vector4Int a) => new(a.x - 1, a.y - 1, a.z - 1, a.w - 1);
 
     public static Vector4Int operator ^(Vector4Int a, int n) => new((int)Math.Pow(a.x, n), (int)Math.Pow(a.y, n), (int)Math.Pow(a.z, n), (int)Math.Pow(a.w, n));
 
