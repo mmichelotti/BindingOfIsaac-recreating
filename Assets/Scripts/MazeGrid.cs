@@ -11,7 +11,7 @@ public class MazeGrid : ScriptableObject
 
     public Vector2Int GetCoordinatesAt(Directions dir)
     {
-        Vector2 vector = DirectionUtility.DirectionToMatrix(dir) * (Length - 1);
+        Vector2 vector = dir.DirectionToMatrix() * (Length - 1);
         return new((int)vector.x, (int)vector.y);
     }
 

@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingPosition: 0
-  chanceForDoor: 0.901
+  chanceForDoor: 0.697
   <Grid>k__BackingField: {fileID: 11400000, guid: 0a30bbeff87c46848a5628f87d2d9d73, type: 2}
 --- !u!114 &1536435641
 MonoBehaviour:

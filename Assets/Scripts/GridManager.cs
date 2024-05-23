@@ -97,9 +97,9 @@ public class GridManager : MonoBehaviour
             tile.Room.Tiles.Add(tile);
             rooms.Add(tile.Room);
         }
-        foreach (var (direction, offset) in DirectionUtility.DirectionToVector)
+        foreach (var (direction, orientaiton) in DirectionUtility.OffsetOf)
         {
-            Vector2Int newPos = pos + offset;
+            Vector2Int newPos = pos + orientaiton.offset;
             //if (visitedTiles.Contains(newPos)) continue; //outer rooms
             if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
@@ -149,9 +149,9 @@ public class GridManager : MonoBehaviour
         //IEnumerable<Vector2Int> where = values.Where(dir => tileAtPosition.ContainsKey(pos + dir));
         //int count = where.Count();
 
-        return DirectionUtility.DirectionToVector.Values
+        return DirectionUtility.OffsetOf.Values
             //.Where(func)
-            .Where(dir => tileAtPosition.ContainsKey(pos + dir))
+            .Where(orient => tileAtPosition.ContainsKey(pos + orient.offset))
             .Count();
     }
     private void OnDrawGizmos()

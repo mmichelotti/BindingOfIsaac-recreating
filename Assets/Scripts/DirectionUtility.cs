@@ -13,57 +13,43 @@ public enum Directions
 
 public static class DirectionUtility
 {
-
-    public static IReadOnlyDictionary<Directions, Vector2Int> DirectionToVector { get; } = new Dictionary<Directions, Vector2Int>()
+    public static IReadOnlyDictionary<Directions, Orientation> OffsetOf { get; } = new Dictionary<Directions, Orientation>()
     {
-        { Directions.Up,    Vector2Int.up },
-        { Directions.Right, Vector2Int.right },
-        { Directions.Down,  Vector2Int.down },
-        { Directions.Left,  Vector2Int.left }
+        { Directions.Up,    Orientation.Up },
+        { Directions.Right, Orientation.Right },
+        { Directions.Down,  Orientation.Down },
+        { Directions.Left,  Orientation.Left }
     };
 
-    public static Vector2Int MultipleDirectionsToVector(Directions dir)
+    public static Vector2Int GetCompositeOffset(this Directions compositeDir)
     {
         Vector2Int result = Vector2Int.zero;
-
-        if ((dir & Directions.Up) != 0) result += Vector2Int.up;
-        if ((dir & Directions.Right) != 0) result += Vector2Int.right;
-        if ((dir & Directions.Down) != 0) result += Vector2Int.down;
-        if ((dir & Directions.Left) != 0) result += Vector2Int.left;
-
+        int bitshifter = 0;
+        foreach (var (direction, orientation) in OffsetOf)
+        {
+            Vector2Int offset = orientation;
+            result += ((int)(compositeDir & direction) >> bitshifter ) * offset;
+            bitshifter++;
+        }
         return result;
     }
+    /*
+    public static Vector2Int MultipleDirectionsToVectorStandard(Directions dir) =>
+                       ((int)(dir & Directions.Up) * Vector2Int.up)
+                     + (((int)(dir & Directions.Right) >> 1) * Vector2Int.right)
+                     + (((int)(dir & Directions.Down) >> 2) * Vector2Int.down)
+                     + (((int)(dir & Directions.Left) >> 3) * Vector2Int.left);
+    */
 
-    public static Vector2 DirectionToMatrix(Directions dir)
-    {
-        Vector2 temp = MultipleDirectionsToVector(dir);
-        return (temp / 2f) + new Vector2(.5f,.5f);
-    }
 
-    public static Quaternion GetRotation(this Directions dir)
-    {
-        return dir switch
-        {
-            Directions.Up => Quaternion.Euler(0, 0, 0),
-            Directions.Right => Quaternion.Euler(0, 0, 90),
-            Directions.Down => Quaternion.Euler(0, 0, 180),
-            Directions.Left => Quaternion.Euler(0, 0, 270),
-            _ => throw new System.NotImplementedException(),
-        };
-    }
+    //with new Orientation structor there is no need to access a method but just to cast the struct as a quaternion
+    public static Vector2 DirectionToMatrix(this Directions dir) => ((Vector2)dir.GetCompositeOffset() / 2f) + new Vector2(.5f,.5f);
 
-    public static Directions GetOpposite(this Directions dir)
-    {
-        return dir switch
-        {
-            Directions.Up => Directions.Down,
-            Directions.Right => Directions.Left,
-            Directions.Down => Directions.Up,
-            Directions.Left => Directions.Right,
-            _ => throw new System.NotImplementedException(),
-        };
-    }
+    //supponendo che enum directions non venga esteso (cosa che non dovrebbe succedere dato che ora che è un flag copre tutte le possibili direzioni)
+    public static Directions GetOpposite(this Directions dir) => (Directions)((int)dir >> 2 | ((int)dir & 0b0011) << 2);
 
+
+    //da provare a fare in bitshift anche getdirection
     public static Directions GetDirection(Vector2 origin, Vector2 target)
     {
         Vector2 difference = (target - origin).normalized;

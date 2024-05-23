@@ -20,7 +20,7 @@ public class ConnectionsHandler : MonoBehaviour
         GameObject doors = InitEmptyGO("Doors", transform);
         GameObject walls = InitEmptyGO("Walls", transform);
 
-        foreach (Directions dir in DirectionUtility.DirectionToVector.Keys)
+        foreach (Directions dir in DirectionUtility.OffsetOf.Keys)
         {
             GameObject door = Instantiate(doorPrefab, doors.transform);
             GameObject wall = Instantiate(wallPrefab, walls.transform);
@@ -39,7 +39,7 @@ public class ConnectionsHandler : MonoBehaviour
             Vector3 wallScale = new(wallLength, rBP.EdgeThickness);
             Vector3 doorScale = new(doorLength, rBP.EdgeThickness);
             Vector3 position = CalculateOffset(dir, rBP.Spacing);
-            Quaternion rotation = dir.GetRotation();
+            Quaternion rotation = DirectionUtility.OffsetOf[dir];
 
             wall.transform.localScale = wallScale;
             wall.name = $"{dir}_Wall";
@@ -68,7 +68,8 @@ public class ConnectionsHandler : MonoBehaviour
 
     private Vector3 CalculateOffset(Directions dir, Vector2 spacing)
     {
-        Vector2 offset = DirectionUtility.DirectionToVector[dir] * spacing;
-        return new Vector3(offset.x, offset.y) + transform.position;
+        Vector2Int offset = DirectionUtility.OffsetOf[dir];
+        Vector2 wsOffset = offset * spacing;
+        return new Vector3(wsOffset.x, wsOffset.y) + transform.position;
     }
 }
