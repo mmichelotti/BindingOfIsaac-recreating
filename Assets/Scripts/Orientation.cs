@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public struct Orientation
+public readonly struct Orientation
 {
-    public Vector2Int offset;
-    public Quaternion rotation;
+    public readonly Vector2Int offset;
+    public readonly Quaternion rotation;
 
     public static Orientation Zero => new(Vector2Int.zero, Quaternion.Euler(0, 0, 0));
     public static Orientation Up => new(Vector2Int.up, Quaternion.Euler(0, 0, 0));
@@ -27,25 +27,9 @@ public struct Orientation
     public static Vector2Int operator *(int a, Orientation b) => a * b.offset;
     public static Vector2Int operator *(Orientation a, int b) => a.offset * b;
 
-    public Orientation(Vector2Int offset, Quaternion rotation)
-    {
-        this.offset = offset;
-        this.rotation = rotation;
-    }
-    public void Deconstruct(out Vector2Int offset, out Quaternion rotation)
-    {
-        offset = this.offset;
-        rotation = this.rotation;
-    }
+    public Orientation(Vector2Int offset, Quaternion rotation) => (this.offset, this.rotation) = (offset, rotation);
+
+    public readonly void Deconstruct(out Vector2Int offset, out Quaternion rotation) => (offset,rotation) = (this.offset, this.rotation);
+
     //SINGLE COMPONENT DECONSTRUCTOR DOENST WORK SO A VIABLE OPTION WAS TO HAVE A CAST
-    /*
-    public void Deconstruct(out Vector2Int offset)
-    {
-        offset = this.offset;
-    }
-    
-    public void Deconstruct(out Quaternion rotation)
-    {
-        rotation = this.rotation;
-    }*/
 }

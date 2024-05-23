@@ -14,13 +14,10 @@ public struct TileBlueprint : IEquatable<TileBlueprint>, IFormattable
 
     public TileBlueprint(Vector2 scale, float edgeThickness)
     {
-        Scale = scale;
-        CenterOffset = scale / 2;
-        float min = Mathf.Min(scale.x, scale.y) / 10;
-        edgeThickness *= min;
-        EdgeThickness = edgeThickness;
-        EdgeOffset = edgeThickness / 2;
-        Spacing = new(CenterOffset.x - EdgeOffset, CenterOffset.y - EdgeOffset);
+        (Scale, CenterOffset) = (scale, scale / 2);
+        edgeThickness *= Mathf.Min(scale.x, scale.y) / 10; ;
+        (EdgeThickness, EdgeOffset) = (edgeThickness, edgeThickness / 2);
+        Spacing = CenterOffset - new Vector2(EdgeOffset, EdgeOffset);
     }
 
     // Implementazione del confronto di uguaglianza

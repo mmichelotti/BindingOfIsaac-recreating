@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Medium_GRD
   m_EditorClassIdentifier: 
   <Length>k__BackingField: 51
-  <Size>k__BackingField: {x: 20, y: 10}
+  <Size>k__BackingField: {x: 10, y: 10}
