@@ -21,14 +21,23 @@ public static class DirectionUtility
         { Directions.Left,  Orientation.Left }
     };
 
+    //with new Orientation structor there is no need to access a method but just to cast the struct as a quaternion
+    public static Vector2 DirectionToMatrix(this Directions dir) => ((Vector2)dir.GetCompositeOffset() / 2f) + new Vector2(.5f,.5f);
+
+    //supponendo che enum directions non venga esteso (cosa che non dovrebbe succedere dato che ora che è un flag copre tutte le possibili direzioni)
+    public static Directions GetOpposite(this Directions dir) => (Directions)((int)dir >> 2 | ((int)dir & 0b0011) << 2);
+
+    //implict cast of Orientation
+    public static Quaternion GetRotation(this Directions dir) => OffsetOf[dir];
+    public static Vector2Int GetOffset(this Directions dir) => OffsetOf[dir];
+
     public static Vector2Int GetCompositeOffset(this Directions compositeDir)
     {
         Vector2Int result = Vector2Int.zero;
         int bitshifter = 0;
-        foreach (var (direction, orientation) in OffsetOf)
+        foreach (var (dir, offset) in OffsetOf)
         {
-            Vector2Int offset = orientation;
-            result += ((int)(compositeDir & direction) >> bitshifter ) * offset;
+            result += ((int)(compositeDir & dir) >> bitshifter ) * offset;
             bitshifter++;
         }
         return result;
@@ -42,11 +51,6 @@ public static class DirectionUtility
     */
 
 
-    //with new Orientation structor there is no need to access a method but just to cast the struct as a quaternion
-    public static Vector2 DirectionToMatrix(this Directions dir) => ((Vector2)dir.GetCompositeOffset() / 2f) + new Vector2(.5f,.5f);
-
-    //supponendo che enum directions non venga esteso (cosa che non dovrebbe succedere dato che ora che è un flag copre tutte le possibili direzioni)
-    public static Directions GetOpposite(this Directions dir) => (Directions)((int)dir >> 2 | ((int)dir & 0b0011) << 2);
 
 
     //da provare a fare in bitshift anche getdirection

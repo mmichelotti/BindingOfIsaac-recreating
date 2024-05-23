@@ -97,26 +97,26 @@ public class GridManager : MonoBehaviour
             tile.Room.Tiles.Add(tile);
             rooms.Add(tile.Room);
         }
-        foreach (var (direction, orientaiton) in DirectionUtility.OffsetOf)
+        foreach (var (dir, offset) in DirectionUtility.OffsetOf)
         {
-            Vector2Int newPos = pos + orientaiton.offset;
+            Vector2Int newPos = pos + offset;
             //if (visitedTiles.Contains(newPos)) continue; //outer rooms
             if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
                 tileAtPosition[pos].PositionConnections();
                 if (visitedTiles.Contains(newPos)) continue;
 
-                Directions oppositeDirection = direction.GetOpposite();
+                Directions oppositeDirection = dir.GetOpposite();
                 if (Random.value < chanceForDoor)
                 {
-                    tileAtPosition[pos].OpenConnections(direction);
+                    tileAtPosition[pos].OpenConnections(dir);
                     adjacentTile.OpenConnections(oppositeDirection);
                 }
                 else
                 {
                     adjacentTile.Room = tile.Room;
                     tile.Room.Tiles.Add(adjacentTile);
-                    tileAtPosition[pos].CloseConnections(direction);
+                    tileAtPosition[pos].CloseConnections(dir);
                     adjacentTile.CloseConnections(oppositeDirection);
                 }
                 ConnectTilesAt(adjacentTile);
@@ -151,7 +151,7 @@ public class GridManager : MonoBehaviour
 
         return DirectionUtility.OffsetOf.Values
             //.Where(func)
-            .Where(orient => tileAtPosition.ContainsKey(pos + orient.offset))
+            .Where(offset => tileAtPosition.ContainsKey(pos + offset))
             .Count();
     }
     private void OnDrawGizmos()

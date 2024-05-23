@@ -13,6 +13,20 @@ public struct Orientation
 
     public static implicit operator Vector2Int(Orientation o) => o.offset;
     public static implicit operator Quaternion(Orientation o) => o.rotation;
+
+    public static Vector2Int operator +(Vector2Int a, Orientation b) => a + b.offset;
+    public static Vector2Int operator +(Orientation a, Vector2Int b) => a.offset + b;
+    public static Vector2Int operator *(Vector2Int a, Orientation b) => a * b.offset;
+    public static Vector2Int operator *(Orientation a, Vector2Int b) => a.offset * b;
+
+    public static Vector2 operator +(Vector2 a, Orientation b) => a + b.offset;
+    public static Vector2 operator +(Orientation a, Vector2 b) => a.offset + b;
+    public static Vector2 operator *(Vector2 a, Orientation b) => a * b.offset;
+    public static Vector2 operator *(Orientation a, Vector2 b) => a.offset * b;
+
+    public static Vector2Int operator *(int a, Orientation b) => a * b.offset;
+    public static Vector2Int operator *(Orientation a, int b) => a.offset * b;
+
     public Orientation(Vector2Int offset, Quaternion rotation)
     {
         this.offset = offset;
