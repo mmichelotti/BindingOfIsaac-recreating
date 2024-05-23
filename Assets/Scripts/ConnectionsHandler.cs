@@ -20,7 +20,7 @@ public class ConnectionsHandler : MonoBehaviour
         GameObject doors = InitEmptyGO("Doors", transform);
         GameObject walls = InitEmptyGO("Walls", transform);
 
-        foreach (Directions dir in DirectionUtility.OffsetOf.Keys)
+        foreach (Directions dir in DirectionUtility.OrientationOf.Keys)
         {
             GameObject door = Instantiate(doorPrefab, doors.transform);
             GameObject wall = Instantiate(wallPrefab, walls.transform);

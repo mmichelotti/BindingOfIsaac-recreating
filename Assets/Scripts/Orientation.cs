@@ -32,6 +32,11 @@ public struct Orientation
         this.offset = offset;
         this.rotation = rotation;
     }
+    public void Deconstruct(out Vector2Int offset, out Quaternion rotation)
+    {
+        offset = this.offset;
+        rotation = this.rotation;
+    }
     //SINGLE COMPONENT DECONSTRUCTOR DOENST WORK SO A VIABLE OPTION WAS TO HAVE A CAST
     /*
     public void Deconstruct(out Vector2Int offset)
@@ -43,9 +48,4 @@ public struct Orientation
     {
         rotation = this.rotation;
     }*/
-    public void Deconstruct(out Vector2Int offset, out Quaternion rotation)
-    {
-        offset = this.offset;
-        rotation = this.rotation;
-    }
 }

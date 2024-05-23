@@ -6,6 +6,7 @@ public class TileFactory : MonoBehaviour
     [SerializeField]
     private Tile tilePF;
     private readonly Queue<Tile> tileQueue = new();
+
     private int TilesCount => GameManager.Instance.SpawnManager.TilesAmount;
     public Tile CurrentTile
     {
@@ -21,7 +22,6 @@ public class TileFactory : MonoBehaviour
     {
         GameObject go = new("Tiles");
         tileQueue.PreparePooling(tilePF, TilesCount, go.transform);
-        // perché non è possibile dedurre il tipo?????????? provando a cambiare tipo di pf e di queue, non va 
     }
 
 

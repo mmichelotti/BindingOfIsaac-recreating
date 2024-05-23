@@ -97,7 +97,7 @@ public class GridManager : MonoBehaviour
             tile.Room.Tiles.Add(tile);
             rooms.Add(tile.Room);
         }
-        foreach (var (dir, offset) in DirectionUtility.OffsetOf)
+        foreach (var (dir, offset) in DirectionUtility.OrientationOf)
         {
             Vector2Int newPos = pos + offset;
             //if (visitedTiles.Contains(newPos)) continue; //outer rooms
@@ -149,7 +149,7 @@ public class GridManager : MonoBehaviour
         //IEnumerable<Vector2Int> where = values.Where(dir => tileAtPosition.ContainsKey(pos + dir));
         //int count = where.Count();
 
-        return DirectionUtility.OffsetOf.Values
+        return DirectionUtility.OrientationOf.Values
             //.Where(func)
             .Where(offset => tileAtPosition.ContainsKey(pos + offset))
             .Count();

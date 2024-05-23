@@ -30,7 +30,7 @@ public class SpawnManager : MonoBehaviour
         if (tileQueue.Count > 0 && tilesCount < TilesAmount && !generationComplete)
         {
             Vector2Int pos = tileQueue.Dequeue();
-            foreach (Vector2Int offset in DirectionUtility.OffsetOf.Values)
+            foreach (Vector2Int offset in DirectionUtility.OrientationOf.Values)
             {
                 TryGenerateTileAt(pos + offset);
             }
