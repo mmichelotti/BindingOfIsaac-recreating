@@ -158,8 +158,7 @@ public class GridManager : MonoBehaviour
     {
         Gizmos.color = Color.black;
         for (int x = 0; x < Grid.Length; x++)
-        {
-            for (int y = 0; y < Grid.Length; y++)
+        {            for (int y = 0; y < Grid.Length; y++)
             {
                 Vector3 pos = Grid.CoordinateToPosition(new Vector2Int(x, y));
                 Gizmos.DrawWireCube(pos, new Vector3(Grid.Size.x, Grid.Size.y, 0));

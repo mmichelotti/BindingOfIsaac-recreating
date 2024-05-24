@@ -2,9 +2,10 @@ using UnityEngine;
 
 public readonly struct Orientation
 {
+    //SINGLE COMPONENT DECONSTRUCTOR DOENST WORK SO A VIABLE OPTION WAS TO HAVE AN IMPLICIT CAST
+
     private readonly Vector2Int offset;
     private readonly Quaternion rotation;
-
     public static Orientation Zero => new(Vector2Int.zero, Quaternion.Euler(0, 0, 0));
     public static Orientation Up => new(Vector2Int.up, Quaternion.Euler(0, 0, 0));
     public static Orientation Right => new(Vector2Int.right, Quaternion.Euler(0, 0, 90));
@@ -31,5 +32,4 @@ public readonly struct Orientation
 
     public readonly void Deconstruct(out Vector2Int offset, out Quaternion rotation) => (offset,rotation) = (this.offset, this.rotation);
 
-    //SINGLE COMPONENT DECONSTRUCTOR DOENST WORK SO A VIABLE OPTION WAS TO HAVE A CAST
 }
