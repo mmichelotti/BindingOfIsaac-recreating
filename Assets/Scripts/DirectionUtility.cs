@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [System.Flags]
 public enum Directions
@@ -31,7 +32,6 @@ public static class DirectionUtility
 
     //implict cast of Orientation
     public static Quaternion GetRotation(this Directions dir) => OrientationOf[dir];
-
     public static Vector2Int GetOffset(this Directions dir) => OrientationOf[dir];
 
 
@@ -47,8 +47,6 @@ public static class DirectionUtility
         }
         return result;
     }
-
-
     /*
     public static Vector2Int MultipleDirectionsToVectorStandard(Directions dir) =>
                        ((int)(dir & Directions.Up) * Vector2Int.up)
@@ -57,17 +55,20 @@ public static class DirectionUtility
                      + (((int)(dir & Directions.Left) >> 3) * Vector2Int.left);
     */
 
+    public static Vector2Int GetOffset(Vector2 origin, Vector2 target) => (origin - target).Sign();
 
-    //da provare a fare in bitshift anche getdirection
-    public static Directions GetDirection(Vector2 origin, Vector2 target)
+    public static Directions GetDirection(Vector2 origin, Vector2 target) => (Directions)
+        ( (Convert.ToInt32(origin.y - target.y > 0) * (int)Directions.Up)
+        | (Convert.ToInt32(origin.y - target.y < 0) * (int)Directions.Down)
+        | (Convert.ToInt32(origin.x - target.x > 0) * (int)Directions.Right)
+        | (Convert.ToInt32(origin.x - target.x < 0) * (int)Directions.Left));
+
+
+    private static Directions Neutralize(this Directions d)
     {
-        Vector2 difference = (target - origin).normalized;
-        float x = difference.x;
-        float y = difference.y;
-
-
-        if (Mathf.Abs(x) > Mathf.Abs(y)) return x > 0 ? Directions.Right : Directions.Left;
-        else return y > 0 ? Directions.Up : Directions.Down;
+        int bits = (int)d;
+        int halfmask = (bits >> 2) ^ (bits & 0b0011);
+        return (Directions)(bits & (halfmask | halfmask << 2));
     }
 
 }

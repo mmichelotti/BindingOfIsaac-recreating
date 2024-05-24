@@ -2,8 +2,8 @@ using UnityEngine;
 
 public readonly struct Orientation
 {
-    public readonly Vector2Int offset;
-    public readonly Quaternion rotation;
+    private readonly Vector2Int offset;
+    private readonly Quaternion rotation;
 
     public static Orientation Zero => new(Vector2Int.zero, Quaternion.Euler(0, 0, 0));
     public static Orientation Up => new(Vector2Int.up, Quaternion.Euler(0, 0, 0));
