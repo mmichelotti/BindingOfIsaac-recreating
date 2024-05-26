@@ -26,6 +26,7 @@ public class GridManager : MonoBehaviour
             foreach (Room room in rooms)
             {
                 float currentDist = Vector2.Distance(from.Pivot, room.Pivot);
+                room.DirectionFromCenter = DirectionUtility.GetDirection(room.Pivot, from.Pivot);
                 if (currentDist > dist)
                 {
                     dist = currentDist;
@@ -34,6 +35,23 @@ public class GridManager : MonoBehaviour
             }
             return mostDistant;
         }
+    }
+
+    public Room GetFurthestRoomAt(Directions dir)
+    {
+        float dist = 0f;
+        Room from = tileAtPosition[FirstTile].Room;
+        Room mostDistant = from;
+        foreach (Room room in rooms)
+        {
+            float currentDist = Vector2.Distance(from.Pivot, room.Pivot);
+            if (currentDist > dist && room.DirectionFromCenter == dir)
+            {
+                dist = currentDist;
+                mostDistant = room;
+            }
+        }
+        return mostDistant;
     }
 
     private void Awake()
@@ -122,9 +140,24 @@ public class GridManager : MonoBehaviour
                 ConnectTilesAt(adjacentTile);
             }
         }
-        tile.DebugRoomColor();
     }
+    public void DebugRoomStatus()
+    {
+        //Furthest room (should be the Boss room, accessible only with a key)
+        FurthestRoom.Color = Color.black;
+        Debug.Log($"Most distant room is {FurthestRoom.DirectionFromCenter}");
 
+        //Opposite Furhtest room (should be the key room, that gives access to the boss room)
+        Room temp = GetFurthestRoomAt(FurthestRoom.DirectionFromCenter.GetOpposite());
+        temp.Color = Color.white;
+        Debug.Log($"Most distant OPPOSITE room is {temp.DirectionFromCenter}");
+
+        //Color all rooms to debug
+        foreach (var tile in tileAtPosition.Values)
+        {
+            tile.DebugRoomColor();
+        }
+    }
     public int CountNeighbors(Vector2Int pos)
     {
         // class Base { }

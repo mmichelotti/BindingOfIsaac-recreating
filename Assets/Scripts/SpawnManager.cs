@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
-    private GridManager GridManager;
+    private GridManager gridManager;
 
     [field: SerializeField]
     public int TilesAmount { get; set; } = 30;
@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
-        GridManager = GameManager.Instance.GridManager;
+        gridManager = GameManager.Instance.GridManager;
     }
 
     private void Update()
@@ -42,7 +42,7 @@ public class SpawnManager : MonoBehaviour
         else if (!generationComplete)
         {
             generationComplete = true;
-            GridManager.ConnectTiles();
+            gridManager.ConnectTiles();
             //DEBUGGING DIRECTIONS
             /*
             Debug.Log($"First Room : (25,25) Furthest Room : {GridManager.FurthestRoom.Pivot}");
@@ -51,18 +51,19 @@ public class SpawnManager : MonoBehaviour
             Debug.Log("Opposite");
             Debug.Log(DirectionUtility.GetDirection(new(25, 25), GridManager.FurthestRoom.Pivot).GetOpposite());
             */
+            gridManager.DebugRoomStatus();
             enabled = false;
         }
     }
 
     private void GenerateTiles()
     {
-        GridManager.ClearTiles();
+        gridManager.ClearTiles();
         tileQueue.Clear();
         tilesCount = 0;
         generationComplete = false;
 
-        firstTile = GridManager.FirstTile;
+        firstTile = gridManager.FirstTile;
         StartGenerationAt(firstTile);
     }
 
@@ -77,7 +78,7 @@ public class SpawnManager : MonoBehaviour
     {
         tileQueue.Enqueue(pos);
         tilesCount++;
-        GridManager.RegisterTileAt(pos);
+        gridManager.RegisterTileAt(pos);
     }
 
 
@@ -85,6 +86,6 @@ public class SpawnManager : MonoBehaviour
     private bool ShouldGenerateTile(Vector2Int pos) =>
         tilesCount < TilesAmount
         && (pos == firstTile || Random.value < probabilityOfSuccess) // First tile is exception
-        && GridManager.Grid.IsWithinGrid(pos)
-        && GridManager.CountNeighbors(pos) < 2; //Limit the neighbours in order to craete more corridor-like shape
+        && gridManager.Grid.IsWithinGrid(pos)
+        && gridManager.CountNeighbors(pos) < 2; //Limit the neighbours in order to craete more corridor-like shape
 }

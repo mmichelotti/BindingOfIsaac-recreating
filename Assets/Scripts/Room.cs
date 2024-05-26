@@ -13,10 +13,12 @@ public class Room
 
     public List<Tile> Tiles = new();
 
-    public readonly Color Color;
+    public Color Color { get; set; }
     public int Id { get; private set; }
 
     private static int _lastId;
+
+    public Directions DirectionFromCenter { get; set; }
 
     public Vector2 Pivot
     {
