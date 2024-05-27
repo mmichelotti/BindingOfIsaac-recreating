@@ -65,9 +65,9 @@ public class ConnectionsHandler : MonoBehaviour
         return go;
     }
 
-    private Vector3 CalculateOffset(Directions dir, Vector2 spacing)
+    private Vector3 CalculateOffset(Directions dir, Float2 spacing)
     {
-        Vector2 offset = dir.GetOffset() * spacing;
+        Float2 offset = dir.GetOffset() * spacing;
         return new Vector3(offset.x, offset.y) + transform.position;
     }
 }

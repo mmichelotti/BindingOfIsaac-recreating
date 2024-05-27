@@ -25,19 +25,19 @@ public static class DirectionUtility
     };
 
     //with new Orientation structor there is no need to access a method but just to cast the struct as a quaternion
-    public static Vector2 DirectionToMatrix(this Directions dir) => ((Vector2)dir.GetCompositeOffset() / 2f) + new Vector2(.5f,.5f);
+    public static Float2 DirectionToMatrix(this Directions dir) => ((Float2)dir.GetCompositeOffset() / 2f) + new Float2(.5f,.5f);
 
     //supponendo che enum directions non venga esteso (cosa che non dovrebbe succedere dato che ora che � un flag copre tutte le possibili direzioni)
     public static Directions GetOpposite(this Directions dir) => (Directions)((int)dir >> 2 | ((int)dir & 0b0011) << 2);
 
     //implict cast of Orientation
     public static Quaternion GetRotation(this Directions dir) => OrientationOf[dir];
-    public static Vector2Int GetOffset(this Directions dir) => OrientationOf[dir];
+    public static Int2 GetOffset(this Directions dir) => OrientationOf[dir];
 
 
-    public static Vector2Int GetCompositeOffset(this Directions compositeDir)
+    public static Int2 GetCompositeOffset(this Directions compositeDir)
     {
-        Vector2Int result = Vector2Int.zero;
+        Int2 result = Int2.Zero;
         int bitshifter = 0;
         foreach (var (dir, offset) in OrientationOf)
         {
@@ -48,22 +48,22 @@ public static class DirectionUtility
         return result;
     }
     /*
-    public static Vector2Int MultipleDirectionsToVectorStandard(Directions dir) =>
-                       ((int)(dir & Directions.Up) * Vector2Int.up)
-                     + (((int)(dir & Directions.Right) >> 1) * Vector2Int.right)
-                     + (((int)(dir & Directions.Down) >> 2) * Vector2Int.down)
-                     + (((int)(dir & Directions.Left) >> 3) * Vector2Int.left);
+    public static Float2 MultipleDirectionsToVectorStandard(Directions dir) =>
+                       ((int)(dir & Directions.Up) * Float2.up)
+                     + (((int)(dir & Directions.Right) >> 1) * Float2.right)
+                     + (((int)(dir & Directions.Down) >> 2) * Float2.down)
+                     + (((int)(dir & Directions.Left) >> 3) * Float2.left);
     */
 
-    public static Vector2Int GetOffset(this Vector2 origin, Vector2 target) => (target - origin).Sign();
+    public static Int2 GetOffset(this Int2 origin, Int2 target) => (target - origin).Sign();
 
-    public static Directions GetDirectionTo(this Vector2 origin, Vector2 target) => (Directions)
+    public static Directions GetDirectionTo(this Int2 origin, Int2 target) => (Directions)
         ( (Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
         | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
         | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)
         | (Convert.ToInt32(target.x - origin.x < 0) * (int)Directions.Left));
 
-    public static Directions GetDirectionTo(this Vector2Int origin, Vector2Int target) => (Directions)
+    public static Directions GetDirectionTo(this Float2 origin, Float2 target) => (Directions)
         ((Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
         | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
         | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)

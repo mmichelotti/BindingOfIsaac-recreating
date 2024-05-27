@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class Room : IDirectionable<Vector2>
+public class Room : IDirectionable<Float2>
 {
     //room kind
     //size (?) from tiles
@@ -27,16 +27,16 @@ public class Room : IDirectionable<Vector2>
 
     #region interface implementation
     public Directions DirectionFromCenter { get; set; }
-    public void SetDirectionFrom(Vector2 origin) => DirectionFromCenter = origin.GetDirectionTo(Position);
+    public void SetDirectionFrom(Float2 origin) => DirectionFromCenter = origin.GetDirectionTo(Position);
 
-    public Vector2 Position
+    public Float2 Position
     {
         get
         {
-            Vector2 sum = Vector2.zero;
+            Float2 sum = Float2.Zero;
             foreach (Tile tile in Tiles)
             {
-                sum += (Vector2)tile.Position;
+                sum += (Float2)tile.Position;
             }
             return sum / Tiles.Count;
         }

@@ -4,20 +4,20 @@ using System;
 [Serializable]
 public struct TileBlueprint : IEquatable<TileBlueprint>, IFormattable
 {
-    public Vector2 Scale;
+    public Float2 Scale;
     [Range(0, 1)]
     public float EdgeThickness;
 
-    public readonly Vector2 CenterOffset;
+    public readonly Float2 CenterOffset;
     public readonly float EdgeOffset;
-    public readonly Vector2 Spacing;
+    public readonly Float2 Spacing;
 
-    public TileBlueprint(Vector2 scale, float edgeThickness)
+    public TileBlueprint(Float2 scale, float edgeThickness)
     {
         (Scale, CenterOffset) = (scale, scale / 2);
         edgeThickness *= Mathf.Min(scale.x, scale.y) / 10; ;
         (EdgeThickness, EdgeOffset) = (edgeThickness, edgeThickness / 2);
-        Spacing = CenterOffset - new Vector2(EdgeOffset, EdgeOffset);
+        Spacing = CenterOffset - new Float2(EdgeOffset, EdgeOffset);
     }
 
     // Implementazione del confronto di uguaglianza
