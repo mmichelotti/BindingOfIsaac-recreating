@@ -25,8 +25,7 @@ public class GridManager : MonoBehaviour
             Room mostDistant = from;
             foreach (Room room in rooms)
             {
-                float currentDist = Vector2.Distance(from.Pivot, room.Pivot);
-                room.DirectionFromCenter = DirectionUtility.GetDirection(room.Pivot, from.Pivot);
+                float currentDist = Vector2.Distance(from.Position, room.Position);
                 if (currentDist > dist)
                 {
                     dist = currentDist;
@@ -44,7 +43,7 @@ public class GridManager : MonoBehaviour
         Room mostDistant = from;
         foreach (Room room in rooms)
         {
-            float currentDist = Vector2.Distance(from.Pivot, room.Pivot);
+            float currentDist = Vector2.Distance(from.Position, room.Position);
             if (currentDist > dist && room.DirectionFromCenter == dir)
             {
                 dist = currentDist;
@@ -53,6 +52,7 @@ public class GridManager : MonoBehaviour
         }
         return mostDistant;
     }
+
 
     private void Awake()
     {
@@ -63,7 +63,16 @@ public class GridManager : MonoBehaviour
     {
         FirstTile = Grid.GetCoordinatesAt(startingPosition);
     }
+    public void Execute()
+    {
+        ConnectTilesAt(tileAtPosition[FirstTile]);
+        RegisterDirections(tileAtPosition[FirstTile]);
+    }
 
+    public void RegisterDirections(Tile origin)
+    {
+        foreach (IDirectionable<Vector2> room in rooms) room.SetDirectionFrom(origin.Room.Position);
+    }
     public bool RegisterTileAt(Vector2Int pos)
     {
         if (!tileAtPosition.ContainsKey(pos))
@@ -91,29 +100,24 @@ public class GridManager : MonoBehaviour
 
     public void ClearTiles()
     {
-        foreach (var tile in tileAtPosition.Values)
-            tileFactory.Deactivate(tile);
+        foreach (var tile in tileAtPosition.Values) tileFactory.Deactivate(tile);
 
         tileAtPosition.Clear();
     }
 
     private readonly HashSet<Vector2Int> visitedTiles = new();
 
-    public void ConnectTiles()
-    {
-        ConnectTilesAt(tileAtPosition[FirstTile]);
-    }
 
-    public void ConnectTilesAt(Tile tile)
+    public void ConnectTilesAt(Tile origin)
     {
-        Vector2Int pos = tile.Coordinates;
+        Vector2Int pos = origin.Position;
         visitedTiles.Add(pos);
         // tile.Room ??= new();
-        if (tile.Room is null)
+        if (origin.Room is null)
         {
-            tile.Room = new();
-            tile.Room.Tiles.Add(tile);
-            rooms.Add(tile.Room);
+            origin.Room = new();
+            origin.Room.Tiles.Add(origin);
+            rooms.Add(origin.Room);
         }
         foreach (var (dir, offset) in DirectionUtility.OrientationOf)
         {
@@ -132,8 +136,8 @@ public class GridManager : MonoBehaviour
                 }
                 else
                 {
-                    adjacentTile.Room = tile.Room;
-                    tile.Room.Tiles.Add(adjacentTile);
+                    adjacentTile.Room = origin.Room;
+                    origin.Room.Tiles.Add(adjacentTile);
                     tileAtPosition[pos].CloseConnections(dir);
                     adjacentTile.CloseConnections(oppositeDirection);
                 }

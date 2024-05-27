@@ -21,7 +21,7 @@ public class BenchMarker : MonoBehaviour
         //warmup the cpu and so it chaces some informations and the resutl of the benchmark arent influenced
         foreach (var item in targetTest)
         {
-            DirectionUtility.GetDirection(center, item);
+            DirectionUtility.GetDirectionTo(center, item);
         }
 
 
@@ -39,7 +39,7 @@ public class BenchMarker : MonoBehaviour
         stopwatch.Start();
         foreach (var item in targetTest)
         {
-            DirectionUtility.GetDirection(center, item);
+            DirectionUtility.GetDirectionTo(center, item);
         }
         stopwatch.Stop();
         System.TimeSpan timeOfApproachB = stopwatch.Elapsed;

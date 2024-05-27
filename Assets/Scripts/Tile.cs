@@ -2,9 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [SelectionBase]
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IDirectionable<Vector2Int>
 {
-    public Vector2Int Coordinates { get; set; }
+    #region interface implementation
+    public Vector2Int Position { get; set; }
+    public Directions DirectionFromCenter { get; set; }
+    public void SetDirectionFrom(Vector2Int origin) => DirectionFromCenter = origin.GetDirectionTo(Position);
+    #endregion
 
     [SerializeField]
     private GameObject floorPF;
@@ -35,7 +39,7 @@ public class Tile : MonoBehaviour
     }
     public void Initialize(Vector2Int pos, string name = "")
     {
-        Coordinates = pos;
+        Position = pos;
         transform.position = GameManager.Instance.GridManager.Grid.CoordinateToPosition(pos);
         this.name = $"{name}Tile";
     }
@@ -60,4 +64,6 @@ public class Tile : MonoBehaviour
     {
         floor.GetComponent<SpriteRenderer>().color = Room.Color;
     }
+
+
 }

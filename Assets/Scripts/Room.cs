@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class Room
+public class Room : IDirectionable<Vector2>
 {
     //room kind
     //size (?) from tiles
@@ -18,25 +18,30 @@ public class Room
 
     private static int _lastId;
 
-    public Directions DirectionFromCenter { get; set; }
+    public Room()
+    {
+        Color = Random.ColorHSV(0f, 1f, .3f, .5f, 1f, 1f);
+        Id = ++_lastId;
+        name = Id.ToString();
+    }
 
-    public Vector2 Pivot
+    #region interface implementation
+    public Directions DirectionFromCenter { get; set; }
+    public void SetDirectionFrom(Vector2 origin) => DirectionFromCenter = origin.GetDirectionTo(Position);
+
+    public Vector2 Position
     {
         get
         {
             Vector2 sum = Vector2.zero;
             foreach (Tile tile in Tiles)
             {
-                sum += (Vector2)tile.Coordinates;
+                sum += (Vector2)tile.Position;
             }
             return sum / Tiles.Count;
         }
     }
+    #endregion
 
-    public Room()
-    {
-        Color = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 1f, 1f);
-        Id = ++_lastId;
-        name = Id.ToString();
-    }
+
 }

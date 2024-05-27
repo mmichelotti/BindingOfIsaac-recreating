@@ -42,15 +42,7 @@ public class SpawnManager : MonoBehaviour
         else if (!generationComplete)
         {
             generationComplete = true;
-            gridManager.ConnectTiles();
-            //DEBUGGING DIRECTIONS
-            /*
-            Debug.Log($"First Room : (25,25) Furthest Room : {GridManager.FurthestRoom.Pivot}");
-            Debug.Log(DirectionUtility.GetDirection(new(25, 25), GridManager.FurthestRoom.Pivot));
-            Debug.Log(DirectionUtility.GetOffset(new(25, 25), GridManager.FurthestRoom.Pivot));
-            Debug.Log("Opposite");
-            Debug.Log(DirectionUtility.GetDirection(new(25, 25), GridManager.FurthestRoom.Pivot).GetOpposite());
-            */
+            gridManager.Execute();
             gridManager.DebugRoomStatus();
             enabled = false;
         }

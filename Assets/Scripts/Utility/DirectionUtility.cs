@@ -55,18 +55,24 @@ public static class DirectionUtility
                      + (((int)(dir & Directions.Left) >> 3) * Vector2Int.left);
     */
 
-    public static Vector2Int GetOffset(Vector2 origin, Vector2 target) => (origin - target).Sign();
+    public static Vector2Int GetOffset(this Vector2 origin, Vector2 target) => (target - origin).Sign();
 
-    public static Directions GetDirection(Vector2 origin, Vector2 target) => (Directions)
-        ( (Convert.ToInt32(origin.y - target.y > 0) * (int)Directions.Up)
-        | (Convert.ToInt32(origin.y - target.y < 0) * (int)Directions.Down)
-        | (Convert.ToInt32(origin.x - target.x > 0) * (int)Directions.Right)
-        | (Convert.ToInt32(origin.x - target.x < 0) * (int)Directions.Left));
+    public static Directions GetDirectionTo(this Vector2 origin, Vector2 target) => (Directions)
+        ( (Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
+        | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
+        | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)
+        | (Convert.ToInt32(target.x - origin.x < 0) * (int)Directions.Left));
+
+    public static Directions GetDirectionTo(this Vector2Int origin, Vector2Int target) => (Directions)
+        ((Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
+        | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
+        | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)
+        | (Convert.ToInt32(target.x - origin.x < 0) * (int)Directions.Left));
 
 
-    private static Directions Neutralize(this Directions d)
+    private static Directions Neutralize(this Directions dir)
     {
-        int bits = (int)d;
+        int bits = (int)dir;
         int halfmask = (bits >> 2) ^ (bits & 0b0011);
         return (Directions)(bits & (halfmask | halfmask << 2));
     }
