@@ -7,9 +7,9 @@ public class BenchMarker : MonoBehaviour
 {
     System.Diagnostics.Stopwatch stopwatch = new();
 
-    private List<Int2> targetTest = new();
-
-    private Int2 center = new(25, 25);
+    private List<Float2> targetTest = new();
+    
+    private Float2 center = new(25, 25);
     private void Start()
     {
         // fill a list with random target Float2

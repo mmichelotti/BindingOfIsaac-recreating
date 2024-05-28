@@ -7,7 +7,7 @@ namespace UnityEngine
         public const short AggressiveInlining = 256;
     }
     [StructLayout(LayoutKind.Sequential)]
-    public struct Float2 : IEquatable<Float2>, IFormattable
+    public struct Float2 : IEquatable<Float2>, IFormattable, ITestable
     {
         #region base
         public float x, y;

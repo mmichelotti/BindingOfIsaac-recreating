@@ -10,11 +10,11 @@ public class GridManager : MonoBehaviour
     [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
 
     private TileFactory tileFactory;
-    private readonly Dictionary<Int2, Tile> tileAtPosition = new();
+    private readonly Dictionary<Float2, Tile> tileAtPosition = new();
     private List<Room> rooms = new();
 
     [field:SerializeField] public MazeGrid Grid { get; private set; }
-    public Int2 FirstTile { get; private set; }
+    public Float2 FirstTile { get; private set; }
 
     public Room FurthestRoom
     {
@@ -73,7 +73,7 @@ public class GridManager : MonoBehaviour
     {
         foreach (IDirectionable<Float2> room in rooms) room.SetDirectionFrom(origin.Room.Position);
     }
-    public bool RegisterTileAt(Int2 pos)
+    public bool RegisterTileAt(Float2 pos)
     {
         if (!tileAtPosition.ContainsKey(pos))
         {
@@ -86,7 +86,7 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
-    public bool ClearTileAt(Int2 pos)
+    public bool ClearTileAt(Float2 pos)
     {
         if (tileAtPosition.ContainsKey(pos))
         {
@@ -105,12 +105,12 @@ public class GridManager : MonoBehaviour
         tileAtPosition.Clear();
     }
 
-    private readonly HashSet<Int2> visitedTiles = new();
+    private readonly HashSet<Float2> visitedTiles = new();
 
 
     public void ConnectTilesAt(Tile origin)
     {
-        Int2 pos = origin.Position;
+        Float2 pos = origin.Position;
         visitedTiles.Add(pos);
         // tile.Room ??= new();
         if (origin.Room is null)
@@ -121,7 +121,7 @@ public class GridManager : MonoBehaviour
         }
         foreach (var (dir, offset) in DirectionUtility.OrientationOf)
         {
-            Int2 newPos = pos + offset;
+            Float2 newPos = pos + offset;
             //if (visitedTiles.Contains(newPos)) continue; //outer rooms
             if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
@@ -162,19 +162,19 @@ public class GridManager : MonoBehaviour
             tile.DebugRoomColor();
         }
     }
-    public int CountNeighbors(Int2 pos)
+    public int CountNeighbors(Float2 pos)
     {
         // class Base { }
         // class Derived : Base { }
 
-        //System.Func<Int2, bool> func;
+        //System.Func<Float2, bool> func;
         //System.Func<Derived, Base> action;
         //
         //Derived Test(Base derived) { return null; }
         //
         //action = Test;
 
-        //bool ShouldTakeThisValue(Int2 dir)
+        //bool ShouldTakeThisValue(Float2 dir)
         //{
         //    return tileAtPosition.ContainsKey(pos + dir);
         //}
@@ -182,8 +182,8 @@ public class GridManager : MonoBehaviour
         //func = ShouldTakeThisValue;
         //func = dir => tileAtPosition.ContainsKey(pos + dir);
 
-        //IEnumerable<Int2> values = DirectionUtility.DirectionToVector.Values;
-        //IEnumerable<Int2> where = values.Where(dir => tileAtPosition.ContainsKey(pos + dir));
+        //IEnumerable<Float2> values = DirectionUtility.DirectionToVector.Values;
+        //IEnumerable<Float2> where = values.Where(dir => tileAtPosition.ContainsKey(pos + dir));
         //int count = where.Count();
 
         return DirectionUtility.OrientationOf.Values
@@ -197,7 +197,7 @@ public class GridManager : MonoBehaviour
         for (int x = 0; x < Grid.Length; x++)
         {            for (int y = 0; y < Grid.Length; y++)
             {
-                Vector3 pos = Grid.CoordinateToPosition(new Int2(x, y));
+                Vector3 pos = Grid.CoordinateToPosition(new Float2(x, y));
                 Gizmos.DrawWireCube(pos, new Vector3(Grid.Size.x, Grid.Size.y, 0));
             }
         }

@@ -2,12 +2,12 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [SelectionBase]
-public class Tile : MonoBehaviour, IDirectionable<Int2>
+public class Tile : MonoBehaviour, IDirectionable<Float2>
 {
     #region interface implementation
-    public Int2 Position { get; set; }
+    public Float2 Position { get; set; }
     public Directions DirectionFromCenter { get; set; }
-    public void SetDirectionFrom(Int2 origin) => DirectionFromCenter = origin.GetDirectionTo(Position);
+    public void SetDirectionFrom(Float2 origin) => DirectionFromCenter = origin.GetDirectionTo(Position);
     #endregion
 
     [SerializeField]
@@ -37,7 +37,7 @@ public class Tile : MonoBehaviour, IDirectionable<Int2>
         ch.InstantiateConnections();
         gameObject.SetActive(false);
     }
-    public void Initialize(Int2 pos, string name = "")
+    public void Initialize(Float2 pos, string name = "")
     {
         Position = pos;
         transform.position = GameManager.Instance.GridManager.Grid.CoordinateToPosition(pos);

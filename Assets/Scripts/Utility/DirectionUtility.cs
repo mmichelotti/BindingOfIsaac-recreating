@@ -32,12 +32,12 @@ public static class DirectionUtility
 
     //implict cast of Orientation
     public static Quaternion GetRotation(this Directions dir) => OrientationOf[dir];
-    public static Int2 GetOffset(this Directions dir) => OrientationOf[dir];
+    public static Float2 GetOffset(this Directions dir) => OrientationOf[dir];
 
 
-    public static Int2 GetCompositeOffset(this Directions compositeDir)
+    public static Float2 GetCompositeOffset(this Directions compositeDir)
     {
-        Int2 result = Int2.Zero;
+        Float2 result = Float2.Zero;
         int bitshifter = 0;
         foreach (var (dir, offset) in OrientationOf)
         {
@@ -55,9 +55,9 @@ public static class DirectionUtility
                      + (((int)(dir & Directions.Left) >> 3) * Float2.left);
     */
 
-    public static Int2 GetOffset(this Int2 origin, Int2 target) => (target - origin).Sign();
+    public static Float2 GetOffset(this Float2 origin, Float2 target) => (target - origin).Sign();
 
-    public static Directions GetDirectionTo(this Int2 origin, Int2 target) => (Directions)
+    public static Directions GetDirectionTo(this Float2 origin, Float2 target) => (Directions)
         ( (Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
         | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
         | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)

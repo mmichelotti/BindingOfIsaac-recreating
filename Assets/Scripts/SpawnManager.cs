@@ -14,11 +14,11 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private float probabilityOfSuccess = 0.65f;
 
-    private readonly Queue<Int2> tileQueue = new();
+    private readonly Queue<Float2> tileQueue = new();
 
     private uint tilesCount;
     private bool generationComplete;
-    private Int2 firstTile;
+    private Float2 firstTile;
 
     private void Start()
     {
@@ -29,8 +29,8 @@ public class SpawnManager : MonoBehaviour
     {
         if (tileQueue.Count > 0 && tilesCount < TilesAmount && !generationComplete)
         {
-            Int2 pos = tileQueue.Dequeue();
-            foreach (Int2 offset in DirectionUtility.OrientationOf.Values)
+            Float2 pos = tileQueue.Dequeue();
+            foreach (Float2 offset in DirectionUtility.OrientationOf.Values)
             {
                 TryGenerateTileAt(pos + offset);
             }
@@ -59,14 +59,14 @@ public class SpawnManager : MonoBehaviour
         StartGenerationAt(firstTile);
     }
 
-    private void TryGenerateTileAt(Int2 pos)
+    private void TryGenerateTileAt(Float2 pos)
     {
         if (!ShouldGenerateTile(pos)) return;
 
         StartGenerationAt(pos);
     }
 
-    private void StartGenerationAt(Int2 pos)
+    private void StartGenerationAt(Float2 pos)
     {
         tileQueue.Enqueue(pos);
         tilesCount++;
@@ -75,7 +75,7 @@ public class SpawnManager : MonoBehaviour
 
 
     //To Do - First tile always have 4 neighbours (room)
-    private bool ShouldGenerateTile(Int2 pos) =>
+    private bool ShouldGenerateTile(Float2 pos) =>
         tilesCount < TilesAmount
         && (pos == firstTile || Random.value < probabilityOfSuccess) // First tile is exception
         && gridManager.Grid.IsWithinGrid(pos)
