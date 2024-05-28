@@ -10,14 +10,14 @@ public class GridManager : MonoBehaviour
     [SerializeField,Range(0,1)]  private float chanceForDoor = 0.8f;
 
     private TileFactory tileFactory;
-    private readonly Dictionary<Float2, Tile> tileAtPosition = new();
+    private readonly Dictionary<Vector2, Tile> tileAtPosition = new();
     private readonly List<Room> rooms = new();
     #endregion
 
 
     #region properties
     [field:SerializeField] public MazeGrid Grid { get; private set; }
-    public Float2 FirstTile { get; private set; }
+    public Vector2 FirstTile { get; private set; }
     public Room FurthestRoom
     {
         get
@@ -27,7 +27,7 @@ public class GridManager : MonoBehaviour
             Room mostDistant = from;
             foreach (Room room in rooms)
             {
-                float currentDist = Float2.Distance(from.Position, room.Position);
+                float currentDist = Vector2.Distance(from.Position, room.Position);
                 if (currentDist > dist)
                 {
                     dist = currentDist;
@@ -46,7 +46,7 @@ public class GridManager : MonoBehaviour
         Room mostDistant = from;
         foreach (Room room in rooms)
         {
-            float currentDist = Float2.Distance(from.Position, room.Position);
+            float currentDist = Vector2.Distance(from.Position, room.Position);
             if (currentDist > dist && room.DirectionFromCenter == dir)
             {
                 dist = currentDist;
@@ -73,8 +73,8 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < Grid.Length; y++)
             {
-                Vector3 pos = Grid.CoordinateToPosition(new Float2(x, y));
-                Gizmos.DrawWireCube(pos, new Float3(Grid.Size));
+                Vector3 pos = Grid.CoordinateToPosition(new Vector2(x, y));
+                Gizmos.DrawWireCube(pos, new Vector3(Grid.Size.x, Grid.Size.y));
             }
         }
     }
@@ -88,7 +88,7 @@ public class GridManager : MonoBehaviour
 
     
 
-    public void RegisterTileAt(Float2 pos)
+    public void RegisterTileAt(Vector2 pos)
     {
         if (!tileAtPosition.ContainsKey(pos))
         {
@@ -104,10 +104,10 @@ public class GridManager : MonoBehaviour
     }
 
 
-    private readonly HashSet<Float2> visitedTiles = new();
+    private readonly HashSet<Vector2> visitedTiles = new();
     public void ConnectTilesAt(Tile origin)
     {
-        Float2 pos = origin.Position;
+        Vector2 pos = origin.Position;
         visitedTiles.Add(pos);
 
         if (origin.Room is null)
@@ -118,7 +118,7 @@ public class GridManager : MonoBehaviour
         }
         foreach (var (dir, offset) in DirectionUtility.OrientationOf)
         {
-            Float2 newPos = pos + offset;
+            Vector2 newPos = pos + offset;
             //if (visitedTiles.Contains(newPos)) continue; //outer rooms
             if (tileAtPosition.TryGetValue(newPos, out Tile adjacentTile))
             {
@@ -142,10 +142,10 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    public void RegisterDirectionsFrom(Point origin)
+    public void RegisterDirectionsFrom(IDirectionable origin)
     {
         //can calculate directions from different classes that derive from Point
-        foreach (Point room in rooms) room.SetDirectionFrom(origin.Position);
+        foreach (IDirectionable room in rooms) room.SetDirectionFrom(origin.Position);
     }
     public void DebugRoomStatus()
     {
@@ -166,19 +166,19 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public int CountNeighbors(Float2 pos)
+    public int CountNeighbors(Vector2 pos)
     {
         // class Base { }
         // class Derived : Base { }
 
-        //System.Func<Float2, bool> func;
+        //System.Func<Vector2, bool> func;
         //System.Func<Derived, Base> action;
         //
         //Derived Test(Base derived) { return null; }
         //
         //action = Test;
 
-        //bool ShouldTakeThisValue(Float2 dir)
+        //bool ShouldTakeThisValue(Vector2 dir)
         //{
         //    return tileAtPosition.ContainsKey(pos + dir);
         //}
@@ -186,8 +186,8 @@ public class GridManager : MonoBehaviour
         //func = ShouldTakeThisValue;
         //func = dir => tileAtPosition.ContainsKey(pos + dir);
 
-        //IEnumerable<Float2> values = DirectionUtility.DirectionToVector.Values;
-        //IEnumerable<Float2> where = values.Where(dir => tileAtPosition.ContainsKey(pos + dir));
+        //IEnumerable<Vector2> values = DirectionUtility.DirectionToVector.Values;
+        //IEnumerable<Vector2> where = values.Where(dir => tileAtPosition.ContainsKey(pos + dir));
         //int count = where.Count();
 
         return DirectionUtility.OrientationOf.Values

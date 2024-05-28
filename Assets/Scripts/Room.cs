@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Room : Point
+public class Room : IDirectionable
 {
     private static int _lastId;
 
@@ -10,23 +10,30 @@ public class Room : Point
     public Color Color { get; set; }
     public int Id { get; private set; }
     public List<Tile> Tiles { get; set; } = new();
-    public override Float2 Position
+
+    public Vector2 Position
     {
         get
         {
-            Float2 sum = Float2.Zero;
+            Vector2 sum = Vector2.zero;
             foreach (Tile tile in Tiles)
             {
-                sum += (Float2)tile.Position;
+                sum += tile.Position;
             }
             return sum / Tiles.Count;
         }
+        set
+        {
+
+        }
     }
+
+    public Directions DirectionFromCenter { get; set; }
     #endregion
 
     public Room()
     {
-        Color = Random.ColorHSV(0f, 1f, .3f, .5f, 1f, 1f);
+        Color = Random.ColorHSV(.3f, .5f, 1f, 1f, .3f, .7f);
         Id = ++_lastId;
     }
 }

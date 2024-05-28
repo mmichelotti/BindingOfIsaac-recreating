@@ -7,12 +7,12 @@ public class BenchMarker : MonoBehaviour
 {
     System.Diagnostics.Stopwatch stopwatch = new();
 
-    private List<Float2> targetTest = new();
+    private List<Vector2> targetTest = new();
     
-    private Float2 center = new(25, 25);
+    private Vector2 center = new(25, 25);
     private void Start()
     {
-        // fill a list with random target Float2
+        // fill a list with random target Vector2
         for (int i = 0; i < 100000; i++)
         {
             targetTest.Add(new(Random.Range(0, 50), Random.Range(0, 50)));

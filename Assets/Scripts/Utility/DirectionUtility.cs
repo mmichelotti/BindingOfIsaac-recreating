@@ -22,13 +22,13 @@ public static class DirectionUtility
         { Directions.Left,  Orientation.Left }
     };
 
-    public static Float2 DirectionToMatrix(this Directions dir) => (dir.GetCompositeOffset() / 2f) + .5f;
+    public static Vector2 DirectionToMatrix(this Directions dir) => (dir.GetCompositeOffset() / 2f) + new Vector2(.5f,.5f);
     public static Directions GetOpposite(this Directions dir) => (Directions)((int)dir >> 2 | ((int)dir & 0b0011) << 2);
     public static Quaternion GetRotation(this Directions dir) => OrientationOf[dir];
-    public static Float2 GetOffset(this Directions dir) => OrientationOf[dir];
-    public static Float2 GetCompositeOffset(this Directions compositeDir)
+    public static Vector2 GetOffset(this Directions dir) => OrientationOf[dir];
+    public static Vector2 GetCompositeOffset(this Directions compositeDir)
     {
-        Float2 result = Float2.Zero;
+        Vector2 result = Vector2.zero;
         int bitshifter = 0;
         foreach (var (dir, offset) in OrientationOf)
         {
@@ -39,15 +39,16 @@ public static class DirectionUtility
         return result;
     }
     /*
-    public static Float2 MultipleDirectionsToVectorStandard(Directions dir) =>
-                       ((int)(dir & Directions.Up) * Float2.up)
-                     + (((int)(dir & Directions.Right) >> 1) * Float2.right)
-                     + (((int)(dir & Directions.Down) >> 2) * Float2.down)
-                     + (((int)(dir & Directions.Left) >> 3) * Float2.left);
+    public static Vector2 MultipleDirectionsToVectorStandard(Directions dir) =>
+                       ((int)(dir & Directions.Up) * Vector2.up)
+                     + (((int)(dir & Directions.Right) >> 1) * Vector2.right)
+                     + (((int)(dir & Directions.Down) >> 2) * Vector2.down)
+                     + (((int)(dir & Directions.Left) >> 3) * Vector2.left);
     */
 
-    public static Float2 GetOffset(this Float2 origin, Float2 target) => (target - origin).Sign();
-    public static Directions GetDirectionTo(this Float2 origin, Float2 target) => (Directions)
+    public static Vector2 GetOffset(this Vector2 origin, Vector2 target) => (target - origin).Sign();
+
+    public static Directions GetDirectionTo(this Vector2 origin, Vector2 target) => (Directions)
         ( (Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
         | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
         | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c10d5eb2c3f22e4daaa7e087d68badb, type: 3}
-  m_Name: Medium_GRD
+  m_Name: Squared_GRD
   m_EditorClassIdentifier: 
   <Length>k__BackingField: 51
   <Size>k__BackingField: {x: 10, y: 10}

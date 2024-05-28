@@ -5,20 +5,20 @@ using System;
 public struct TileBlueprint : IEquatable<TileBlueprint>, IFormattable
 {
     #region variables
-    public Float2 Scale;
+    public Vector2 Scale;
     [Range(0, 1)] public float EdgeThickness;
 
-    public readonly Float2 CenterOffset;
-    public readonly Float2 Spacing;
+    public readonly Vector2 CenterOffset;
+    public readonly Vector2 Spacing;
     public readonly float EdgeOffset;
     #endregion
-    public TileBlueprint(Float2 scale, float edgeThickness)
+    public TileBlueprint(Vector2 scale, float edgeThickness)
     {
         edgeThickness *= Mathf.Min(scale.x, scale.y) / 10; ;
 
         (Scale, CenterOffset) = (scale, scale / 2);
         (EdgeThickness, EdgeOffset) = (edgeThickness, edgeThickness / 2);
-        Spacing = CenterOffset - EdgeOffset;
+        Spacing = CenterOffset - new Vector2(EdgeOffset, EdgeOffset);
     }
 
     #region interfaces

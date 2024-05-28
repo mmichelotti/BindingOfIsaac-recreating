@@ -51,7 +51,11 @@ public class ConnectionsHandler : MonoBehaviour
         go.transform.parent = transform;
         return go;
     }
-    private Vector3 CalculateOffset(Directions dir, Float2 spacing) => (dir.GetOffset() * spacing) + (Float3)transform.position;
+    private Vector3 CalculateOffset(Directions dir, Vector2 spacing)
+    {
+        Vector2 offsetSpacing = dir.GetOffset() * spacing;
+        return new Vector3(offsetSpacing.x, offsetSpacing.y) + transform.position;
+    }
     public void OpenDoor(Directions dir) => directionToConnections[dir].door.SetActive(true);
     public void OpenWall(Directions dir) => directionToConnections[dir].wall.SetActive(true);
     public void CloseDoor(Directions dir) => directionToConnections[dir].door.SetActive(false);

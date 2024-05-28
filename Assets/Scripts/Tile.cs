@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [SelectionBase]
-public class Tile : Point
+public class Tile : MonoBehaviour, IDirectionable
 {
     #region variables
     [SerializeField] private GameObject floorPF;
@@ -12,10 +12,14 @@ public class Tile : Point
     private TileBlueprint normalTile;
     private ConnectionsHandler ch;
     private GameObject floor;
-    #endregion
 
+    #endregion
+    #region properties
+    public Vector2 Position { get; set; }
+    public Directions DirectionFromCenter { get; set; }
+    #endregion
     #region initialization
-    public void Initialize(Float2 pos, string name = "")
+    public void Initialize(Vector2 pos, string name = "")
     {
         Position = pos;
         transform.position = GameManager.Instance.GridManager.Grid.CoordinateToPosition(pos);
