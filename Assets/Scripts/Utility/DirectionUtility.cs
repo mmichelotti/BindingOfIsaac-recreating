@@ -25,7 +25,7 @@ public static class DirectionUtility
     };
 
     //with new Orientation structor there is no need to access a method but just to cast the struct as a quaternion
-    public static Float2 DirectionToMatrix(this Directions dir) => ((Float2)dir.GetCompositeOffset() / 2f) + new Float2(.5f,.5f);
+    public static Float2 DirectionToMatrix(this Directions dir) => (dir.GetCompositeOffset() / 2f) + .5f;
 
     //supponendo che enum directions non venga esteso (cosa che non dovrebbe succedere dato che ora che � un flag copre tutte le possibili direzioni)
     public static Directions GetOpposite(this Directions dir) => (Directions)((int)dir >> 2 | ((int)dir & 0b0011) << 2);
@@ -59,12 +59,6 @@ public static class DirectionUtility
 
     public static Directions GetDirectionTo(this Float2 origin, Float2 target) => (Directions)
         ( (Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
-        | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
-        | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)
-        | (Convert.ToInt32(target.x - origin.x < 0) * (int)Directions.Left));
-
-    public static Directions GetDirectionTo(this Float2 origin, Float2 target) => (Directions)
-        ((Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
         | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
         | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)
         | (Convert.ToInt32(target.x - origin.x < 0) * (int)Directions.Left));

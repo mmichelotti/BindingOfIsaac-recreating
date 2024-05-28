@@ -11,7 +11,7 @@ public class GridManager : MonoBehaviour
 
     private TileFactory tileFactory;
     private readonly Dictionary<Float2, Tile> tileAtPosition = new();
-    private List<Room> rooms = new();
+    private readonly List<Room> rooms = new();
 
     [field:SerializeField] public MazeGrid Grid { get; private set; }
     public Float2 FirstTile { get; private set; }
@@ -66,12 +66,14 @@ public class GridManager : MonoBehaviour
     public void Execute()
     {
         ConnectTilesAt(tileAtPosition[FirstTile]);
-        RegisterDirections(tileAtPosition[FirstTile]);
+        RegisterDirectionsFrom(tileAtPosition[FirstTile]);
     }
 
-    public void RegisterDirections(Tile origin)
+    //can calculate directions from different classes that derive from Point
+    //would have preferred an Interface but interface doesnt allow me to implement properties without re-declaring them in the classes
+    public void RegisterDirectionsFrom(Point origin)
     {
-        foreach (IDirectionable<Float2> room in rooms) room.SetDirectionFrom(origin.Room.Position);
+        foreach (Point room in rooms) room.SetDirectionFrom(origin.Position);
     }
     public bool RegisterTileAt(Float2 pos)
     {

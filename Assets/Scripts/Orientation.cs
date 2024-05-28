@@ -20,11 +20,6 @@ public readonly struct Orientation
     public static Float2 operator *(Float2 a, Orientation b) => a * b.offset;
     public static Float2 operator *(Orientation a, Float2 b) => a.offset * b;
 
-    public static Float2 operator +(Float2 a, Orientation b) => a + b.offset;
-    public static Float2 operator +(Orientation a, Float2 b) => a.offset + b;
-    public static Float2 operator *(Float2 a, Orientation b) => a * b.offset;
-    public static Float2 operator *(Orientation a, Float2 b) => a.offset * b;
-
     public static Float2 operator *(int a, Orientation b) => a * b.offset;
     public static Float2 operator *(Orientation a, int b) => a.offset * b;
 

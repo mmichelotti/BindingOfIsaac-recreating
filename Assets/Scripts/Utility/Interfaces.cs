@@ -1,12 +1,8 @@
 using UnityEngine;
 
-public interface ITestable
+public abstract class Point : MonoBehaviour
 {
-    
-}
-public interface IDirectionable<T> where T : ITestable
-{
-    public abstract T Position { get; }
-    public abstract Directions DirectionFromCenter { get; set; }
-    public abstract void SetDirectionFrom(T origin);
+    public virtual Float2 Position { get; set; }
+    public Directions DirectionFromCenter { get; set; }
+    public void SetDirectionFrom(Float2 origin) => DirectionFromCenter = origin.GetDirectionTo(Position);
 }

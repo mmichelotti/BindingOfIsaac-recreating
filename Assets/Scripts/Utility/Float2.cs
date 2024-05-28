@@ -7,7 +7,7 @@ namespace UnityEngine
         public const short AggressiveInlining = 256;
     }
     [StructLayout(LayoutKind.Sequential)]
-    public struct Float2 : IEquatable<Float2>, IFormattable, ITestable
+    public struct Float2 : IEquatable<Float2>, IFormattable
     {
         #region base
         public float x, y;
@@ -81,17 +81,20 @@ namespace UnityEngine
                 }
             }
         }
-        public static Float2 operator +(Float2 a, Float2 b) => new Float2(a.x + b.x, a.y + b.y);
-        public static Float2 operator -(Float2 a, Float2 b) => new Float2(a.x - b.x, a.y - b.y);
-        public static Float2 operator *(Float2 a, Float2 b) => new(a.x * b.x, a.y * b.y);
-        public static Float2 operator /(Float2 a, Float2 b) => new(a.x / b.x, a.y / b.y);
-        public static Float2 operator -(Float2 a) => new(-a.x, -a.y);
-        public static Float2 operator *(Float2 a, float d) => new(a.x * d, a.y * d);
-        public static Float2 operator *(float d, Float2 a) => new(a.x * d, a.y * d);
-        public static Float2 operator /(Float2 a, float d) => new(a.x / d, a.y / d);
+        public static Float2 operator +(Float2 a, Float2 b) =>    new (a.x + b.x, a.y + b.y);
+        public static Float2 operator +(Float2 a, float b) =>       new(a.x + b, a.y + b);
+        public static Float2 operator +(float a, Float2 b) =>       new(a + b.x, a + b.y);
+        public static Float2 operator -(Float2 a, Float2 b) =>    new (a.x - b.x, a.y - b.y);
+        public static Float2 operator *(Float2 a, Float2 b) =>    new(a.x * b.x, a.y * b.y);
+        public static Float2 operator /(Float2 a, Float2 b) =>    new(a.x / b.x, a.y / b.y);
+        public static Float2 operator -(Float2 a) =>              new(-a.x, -a.y);
+        public static Float2 operator *(Float2 a, float d) =>     new(a.x * d, a.y * d);
+        public static Float2 operator *(float d, Float2 a) =>     new(a.x * d, a.y * d);
+        public static Float2 operator /(Float2 a, float d) =>     new(a.x / d, a.y / d);
         public static bool operator !=(Float2 lhs, Float2 rhs) => !(lhs == rhs);
-        public static implicit operator Float2(Vector3 v) => new(v.x, v.y);
-        public static implicit operator Vector3(Float2 v) => new(v.x, v.y, 0);
+
+        public static implicit operator Float2(Vector3 v) =>      new(v.x, v.y);
+        public static implicit operator Vector3(Float2 v) =>      new(v.x, v.y, 0);
 
         public static bool operator ==(Float2 lhs, Float2 rhs)
         {
