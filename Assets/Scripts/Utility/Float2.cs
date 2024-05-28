@@ -82,8 +82,10 @@ namespace UnityEngine
             }
         }
         public static Float2 operator +(Float2 a, Float2 b) =>    new (a.x + b.x, a.y + b.y);
-        public static Float2 operator +(Float2 a, float b) =>       new(a.x + b, a.y + b);
-        public static Float2 operator +(float a, Float2 b) =>       new(a + b.x, a + b.y);
+        public static Float2 operator +(Float2 a, float b) =>     new(a.x + b, a.y + b);
+        public static Float2 operator +(float a, Float2 b) =>     new(a + b.x, a + b.y);
+        public static Float2 operator -(Float2 a, float b) =>     new(a.x - b, a.y - b);
+        public static Float2 operator -(float a, Float2 b) =>     new(a - b.x, a - b.y);
         public static Float2 operator -(Float2 a, Float2 b) =>    new (a.x - b.x, a.y - b.y);
         public static Float2 operator *(Float2 a, Float2 b) =>    new(a.x * b.x, a.y * b.y);
         public static Float2 operator /(Float2 a, Float2 b) =>    new(a.x / b.x, a.y / b.y);

@@ -5,17 +5,18 @@ using UnityEngine;
 [RequireComponent(typeof(TileFactory))]
 public class GridManager : MonoBehaviour
 {
+    #region variables
     [SerializeField] Directions startingPosition;
-
-    [Range(0,1)] [SerializeField] private float chanceForDoor = 0.8f;
+    [SerializeField,Range(0,1)]  private float chanceForDoor = 0.8f;
 
     private TileFactory tileFactory;
     private readonly Dictionary<Float2, Tile> tileAtPosition = new();
     private readonly List<Room> rooms = new();
+    #endregion
 
+    #region properties
     [field:SerializeField] public MazeGrid Grid { get; private set; }
     public Float2 FirstTile { get; private set; }
-
     public Room FurthestRoom
     {
         get
@@ -35,6 +36,7 @@ public class GridManager : MonoBehaviour
             return mostDistant;
         }
     }
+    #endregion
 
     public Room GetFurthestRoomAt(Directions dir)
     {
@@ -53,7 +55,7 @@ public class GridManager : MonoBehaviour
         return mostDistant;
     }
 
-
+    #region unity events
     private void Awake()
     {
         tileFactory = GetComponent<TileFactory>();
@@ -63,58 +65,50 @@ public class GridManager : MonoBehaviour
     {
         FirstTile = Grid.GetCoordinatesAt(startingPosition);
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        for (int x = 0; x < Grid.Length; x++)
+        {
+            for (int y = 0; y < Grid.Length; y++)
+            {
+                Vector3 pos = Grid.CoordinateToPosition(new Float2(x, y));
+                Gizmos.DrawWireCube(pos, new Vector3(Grid.Size.x, Grid.Size.y, 0));
+            }
+        }
+    }
+    #endregion
+    #region methods
     public void Execute()
     {
         ConnectTilesAt(tileAtPosition[FirstTile]);
         RegisterDirectionsFrom(tileAtPosition[FirstTile]);
     }
 
-    //can calculate directions from different classes that derive from Point
-    //would have preferred an Interface but interface doesnt allow me to implement properties without re-declaring them in the classes
-    public void RegisterDirectionsFrom(Point origin)
-    {
-        foreach (Point room in rooms) room.SetDirectionFrom(origin.Position);
-    }
-    public bool RegisterTileAt(Float2 pos)
+    
+
+    public void RegisterTileAt(Float2 pos)
     {
         if (!tileAtPosition.ContainsKey(pos))
         {
             Tile tile = tileFactory.CurrentTile;
             tile.Initialize(pos);
             tileAtPosition.Add(pos, tile);
-            return true;
         }
-
-        return false;
     }
-
-    public bool ClearTileAt(Float2 pos)
-    {
-        if (tileAtPosition.ContainsKey(pos))
-        {
-            tileFactory.Deactivate(tileAtPosition[pos]);
-            tileAtPosition.Remove(pos);
-            return true;
-        }
-
-        return false;
-    }
-
     public void ClearTiles()
     {
         foreach (var tile in tileAtPosition.Values) tileFactory.Deactivate(tile);
-
         tileAtPosition.Clear();
     }
 
+
     private readonly HashSet<Float2> visitedTiles = new();
-
-
     public void ConnectTilesAt(Tile origin)
     {
         Float2 pos = origin.Position;
         visitedTiles.Add(pos);
-        // tile.Room ??= new();
+
         if (origin.Room is null)
         {
             origin.Room = new();
@@ -147,6 +141,11 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+    public void RegisterDirectionsFrom(Point origin)
+    {
+        //can calculate directions from different classes that derive from Point
+        foreach (Point room in rooms) room.SetDirectionFrom(origin.Position);
+    }
     public void DebugRoomStatus()
     {
         //Furthest room (should be the Boss room, accessible only with a key)
@@ -164,6 +163,8 @@ public class GridManager : MonoBehaviour
             tile.DebugRoomColor();
         }
     }
+
+
     public int CountNeighbors(Float2 pos)
     {
         // class Base { }
@@ -193,15 +194,5 @@ public class GridManager : MonoBehaviour
             .Where(offset => tileAtPosition.ContainsKey(pos + offset))
             .Count();
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.black;
-        for (int x = 0; x < Grid.Length; x++)
-        {            for (int y = 0; y < Grid.Length; y++)
-            {
-                Vector3 pos = Grid.CoordinateToPosition(new Float2(x, y));
-                Gizmos.DrawWireCube(pos, new Vector3(Grid.Size.x, Grid.Size.y, 0));
-            }
-        }
-    }
+    #endregion
 }

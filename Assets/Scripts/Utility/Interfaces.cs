@@ -1,4 +1,5 @@
 using UnityEngine;
+// i would love so much an interface IDirecitonable but if i do it i must implement the properties in the classes which is stupid to me
 
 public abstract class Point : MonoBehaviour
 {

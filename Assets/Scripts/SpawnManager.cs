@@ -5,57 +5,43 @@ using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
-    private GridManager gridManager;
-
-    [field: SerializeField]
-    public int TilesAmount { get; set; } = 30;
-
-    [Range(0, 1)]
-    [SerializeField]
-    private float probabilityOfSuccess = 0.65f;
+    #region variables
+    [field: SerializeField] public int TilesAmount { get; set; } = 30;
+    [SerializeField, Range(0, 1)] private float probabilityOfSuccess = 0.65f;
 
     private readonly Queue<Float2> tileQueue = new();
-
     private uint tilesCount;
     private bool generationComplete;
     private Float2 firstTile;
-
-    private void Start()
-    {
-        gridManager = GameManager.Instance.GridManager;
-    }
+    #endregion
+    private GridManager GridManager => GameManager.Instance.GridManager;
 
     private void Update()
     {
         if (tileQueue.Count > 0 && tilesCount < TilesAmount && !generationComplete)
         {
             Float2 pos = tileQueue.Dequeue();
-            foreach (Float2 offset in DirectionUtility.OrientationOf.Values)
-            {
-                TryGenerateTileAt(pos + offset);
-            }
+            foreach (var offset in DirectionUtility.OrientationOf.Values) TryGenerateTileAt(pos + offset);
         }
-        else if (tilesCount < TilesAmount)
-        {
-            GenerateTiles();
-        }
+        else if (tilesCount < TilesAmount) GenerateTiles();
         else if (!generationComplete)
         {
             generationComplete = true;
-            gridManager.Execute();
-            gridManager.DebugRoomStatus();
+            GridManager.Execute();
+            GridManager.DebugRoomStatus();
             enabled = false;
         }
     }
 
+    #region methods
     private void GenerateTiles()
     {
-        gridManager.ClearTiles();
-        tileQueue.Clear();
         tilesCount = 0;
+        GridManager.ClearTiles();
+        tileQueue.Clear();
         generationComplete = false;
 
-        firstTile = gridManager.FirstTile;
+        firstTile = GridManager.FirstTile;
         StartGenerationAt(firstTile);
     }
 
@@ -70,14 +56,14 @@ public class SpawnManager : MonoBehaviour
     {
         tileQueue.Enqueue(pos);
         tilesCount++;
-        gridManager.RegisterTileAt(pos);
+        GridManager.RegisterTileAt(pos);
     }
-
 
     //To Do - First tile always have 4 neighbours (room)
     private bool ShouldGenerateTile(Float2 pos) =>
         tilesCount < TilesAmount
         && (pos == firstTile || Random.value < probabilityOfSuccess) // First tile is exception
-        && gridManager.Grid.IsWithinGrid(pos)
-        && gridManager.CountNeighbors(pos) < 2; //Limit the neighbours in order to craete more corridor-like shape
+        && GridManager.Grid.IsWithinGrid(pos)
+        && GridManager.CountNeighbors(pos) < 2; //Limit the neighbours in order to craete more corridor-like shape
+    #endregion
 }

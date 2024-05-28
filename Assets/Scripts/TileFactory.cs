@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class TileFactory : MonoBehaviour
 {
-    [SerializeField]
-    private Tile tilePF;
+    #region variables
+    [SerializeField] private Tile tilePF;
     private readonly Queue<Tile> tileQueue = new();
-
+    #endregion
+    #region properties
     private int TilesCount => GameManager.Instance.SpawnManager.TilesAmount;
     public Tile CurrentTile
     {
@@ -17,14 +18,14 @@ public class TileFactory : MonoBehaviour
             return tile;
         }
     }
-
+    #endregion
+    #region methods
     private void Start()
     {
         GameObject go = new("Tiles");
         tileQueue.PreparePooling(tilePF, TilesCount, go.transform);
     }
-
-
     public void Activate(Tile tile) => tile.gameObject.SetActive(true);
     public void Deactivate(Tile tile) => tile.gameObject.SetActive(false);
+    #endregion
 }

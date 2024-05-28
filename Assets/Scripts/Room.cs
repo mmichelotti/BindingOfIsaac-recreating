@@ -1,10 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [System.Serializable]
 public class Room : Point
 {
+    private static int _lastId;
+
+    #region properties
+    public Color Color { get; set; }
+    public int Id { get; private set; }
+    public List<Tile> Tiles { get; set; } = new();
     public override Float2 Position
     {
         get
@@ -17,18 +22,11 @@ public class Room : Point
             return sum / Tiles.Count;
         }
     }
-
-    public List<Tile> Tiles = new();
-
-    public Color Color { get; set; }
-    public int Id { get; private set; }
-
-    private static int _lastId;
+    #endregion
 
     public Room()
     {
         Color = Random.ColorHSV(0f, 1f, .3f, .5f, 1f, 1f);
         Id = ++_lastId;
     }
-
 }

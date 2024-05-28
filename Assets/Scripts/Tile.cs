@@ -4,27 +4,28 @@ using System.Collections.Generic;
 [SelectionBase]
 public class Tile : Point
 {
-
-    [SerializeField]
-    private GameObject floorPF;
-
-    [Range(0, 1)]
-    [SerializeField]
-    private float wallThickness = 1.0f;
-
-    [SerializeReference]
-    public Room Room;
+    #region variables
+    [SerializeField] private GameObject floorPF;
+    [SerializeField, Range(0, 1)] private float wallThickness = 1.0f;
+    [SerializeReference] public Room Room;
 
     private TileBlueprint normalTile;
     private ConnectionsHandler ch;
     private GameObject floor;
+    #endregion
 
+    #region initialization
+    public void Initialize(Float2 pos, string name = "")
+    {
+        Position = pos;
+        transform.position = GameManager.Instance.GridManager.Grid.CoordinateToPosition(pos);
+        this.name = $"{name}Tile";
+    }
     private void Awake()
     {
         ch = GetComponent<ConnectionsHandler>();
         normalTile = new(GameManager.Instance.GridManager.Grid.Size, wallThickness);
     }
-
     private void Start()
     {
         floor = Instantiate(floorPF, transform);
@@ -32,13 +33,8 @@ public class Tile : Point
         ch.InstantiateConnections();
         gameObject.SetActive(false);
     }
-    public void Initialize(Float2 pos, string name = "")
-    {
-        Position = pos;
-        transform.position = GameManager.Instance.GridManager.Grid.CoordinateToPosition(pos);
-        this.name = $"{name}Tile";
-    }
-
+    #endregion
+    #region methods
     public void PositionConnections()
     {
         ch.SetConnectionsTransform(normalTile);
@@ -60,6 +56,5 @@ public class Tile : Point
     {
         floor.GetComponent<SpriteRenderer>().color = Room.Color;
     }
-
-
+    #endregion
 }
