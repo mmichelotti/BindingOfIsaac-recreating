@@ -25,15 +25,15 @@ public class ConnectionsHandler : MonoBehaviour
             OpenWall(dir);
         }
     }
-    public void SetConnectionsTransform(TileBlueprint rBP)
+    public void SetConnectionsTransform(TileBlueprint tBP)
     {
-        float doorLength = Mathf.Min(rBP.Scale.x, rBP.Scale.y) * doorSize;
+        float doorLength = Mathf.Min(tBP.Scale.x, tBP.Scale.y) * doorSize;
         foreach (var (dir, (door, wall)) in directionToConnections)
         {
-            float wallLength = ((int)dir % 2 == 0) ? rBP.Scale.x : rBP.Scale.y;
-            Vector3 wallScale = new(wallLength, rBP.EdgeThickness);
-            Vector3 doorScale = new(doorLength, rBP.EdgeThickness);
-            Vector3 position = CalculateOffset(dir, rBP.Spacing);
+            float wallLength = ((int)dir % 2 == 0) ? tBP.Scale.x : tBP.Scale.y;
+            Vector3 wallScale = new(wallLength, tBP.EdgeThickness);
+            Vector3 doorScale = new(doorLength, tBP.EdgeThickness);
+            Vector3 position = CalculateOffset(dir, tBP.Spacing);
 
             wall.transform.localScale = wallScale;
             wall.name = $"{dir}_Wall";
@@ -51,12 +51,7 @@ public class ConnectionsHandler : MonoBehaviour
         go.transform.parent = transform;
         return go;
     }
-    private Vector3 CalculateOffset(Directions dir, Float2 spacing)
-    {
-        Float2 offset = dir.GetOffset() * spacing;
-        return new Vector3(offset.x, offset.y) + transform.position;
-    }
-
+    private Vector3 CalculateOffset(Directions dir, Float2 spacing) => (dir.GetOffset() * spacing) + (Float3)transform.position;
     public void OpenDoor(Directions dir) => directionToConnections[dir].door.SetActive(true);
     public void OpenWall(Directions dir) => directionToConnections[dir].wall.SetActive(true);
     public void CloseDoor(Directions dir) => directionToConnections[dir].door.SetActive(false);

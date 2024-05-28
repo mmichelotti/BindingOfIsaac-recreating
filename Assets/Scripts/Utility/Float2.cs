@@ -2,10 +2,6 @@ using System;
 using System.Runtime.InteropServices;
 namespace UnityEngine
 {
-    static class MethodImplOptionsEx
-    {
-        public const short AggressiveInlining = 256;
-    }
     [StructLayout(LayoutKind.Sequential)]
     public struct Float2 : IEquatable<Float2>, IFormattable
     {

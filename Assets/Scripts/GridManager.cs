@@ -14,6 +14,7 @@ public class GridManager : MonoBehaviour
     private readonly List<Room> rooms = new();
     #endregion
 
+
     #region properties
     [field:SerializeField] public MazeGrid Grid { get; private set; }
     public Float2 FirstTile { get; private set; }
@@ -73,7 +74,7 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < Grid.Length; y++)
             {
                 Vector3 pos = Grid.CoordinateToPosition(new Float2(x, y));
-                Gizmos.DrawWireCube(pos, new Vector3(Grid.Size.x, Grid.Size.y, 0));
+                Gizmos.DrawWireCube(pos, new Float3(Grid.Size));
             }
         }
     }

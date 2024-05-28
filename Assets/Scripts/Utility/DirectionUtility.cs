@@ -11,9 +11,7 @@ public enum Directions
     Down =   0b0100,
     Left =   0b1000,
 }
-//ho capito cosa sono le record struct ma non si possono usare
-//quindi credo di avere capito cosa sono i record
-//chiedere ad ale come effettivamente potrebbero essere implementati dei record al posto di classi
+
 public static class DirectionUtility
 {
     public static IReadOnlyDictionary<Directions, Orientation> OrientationOf { get; } = new Dictionary<Directions, Orientation>()
@@ -24,17 +22,10 @@ public static class DirectionUtility
         { Directions.Left,  Orientation.Left }
     };
 
-    //with new Orientation structor there is no need to access a method but just to cast the struct as a quaternion
     public static Float2 DirectionToMatrix(this Directions dir) => (dir.GetCompositeOffset() / 2f) + .5f;
-
-    //supponendo che enum directions non venga esteso (cosa che non dovrebbe succedere dato che ora che � un flag copre tutte le possibili direzioni)
     public static Directions GetOpposite(this Directions dir) => (Directions)((int)dir >> 2 | ((int)dir & 0b0011) << 2);
-
-    //implict cast of Orientation
     public static Quaternion GetRotation(this Directions dir) => OrientationOf[dir];
     public static Float2 GetOffset(this Directions dir) => OrientationOf[dir];
-
-
     public static Float2 GetCompositeOffset(this Directions compositeDir)
     {
         Float2 result = Float2.Zero;
@@ -56,13 +47,11 @@ public static class DirectionUtility
     */
 
     public static Float2 GetOffset(this Float2 origin, Float2 target) => (target - origin).Sign();
-
     public static Directions GetDirectionTo(this Float2 origin, Float2 target) => (Directions)
         ( (Convert.ToInt32(target.y - origin.y > 0) * (int)Directions.Up)
         | (Convert.ToInt32(target.y - origin.y < 0) * (int)Directions.Down)
         | (Convert.ToInt32(target.x - origin.x > 0) * (int)Directions.Right)
         | (Convert.ToInt32(target.x - origin.x < 0) * (int)Directions.Left));
-
 
     private static Directions Neutralize(this Directions dir)
     {
@@ -70,5 +59,4 @@ public static class DirectionUtility
         int halfmask = (bits >> 2) ^ (bits & 0b0011);
         return (Directions)(bits & (halfmask | halfmask << 2));
     }
-
 }
