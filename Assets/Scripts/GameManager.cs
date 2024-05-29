@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
     public SpawnManager SpawnManager { get; private set; }
     public GridManager GridManager { get; private set; }
 
-
     private void Awake()
     {
         Instance = this.MakeSingleton();
